@@ -45,7 +45,7 @@ export default SplashScreen;
 
 
 const {height} = Dimensions.get("screen");
-const height_logo = height * 0.00002;
+const height_logo = height * 0.00000002;
 
 
 const styles = StyleSheet.create({
@@ -63,12 +63,12 @@ const styles = StyleSheet.create({
     },
     footer: {
     flex: 1,
-    justifyContent: 'space-evenly',
+    justifyContent: "space-around",
     backgroundColor: '#fff',
     borderTopRightRadius: 1000,
 
-    paddingHorizontal: 75,
-    paddingVertical: 75,
+    paddingHorizontal: 7,
+    paddingVertical: 7,
     width: '100%',
 },
     text_header: {
@@ -130,7 +130,7 @@ const styles = StyleSheet.create({
     paddingBottom: 8,
     borderWidth: 1,
     borderColor: '#ff8d00',
-    borderRadius: 8,
+    borderRadius: 80,
     alignItems: "center",
     backgroundColor: '#ff8d00',
 },

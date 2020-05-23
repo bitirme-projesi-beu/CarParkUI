@@ -27,12 +27,12 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 
-import RootStackScreen from '../carpark-ui/screens/RootStackScreen';
+import RootStackScreen from '../CarParkUI/screens/RootStackScreen';
 
-import HomeScreen from '../carpark-ui/screens/Home';
-import ProfileScreen from '../carpark-ui/screens/Profile';
-import ReservationsScreen from '../carpark-ui/screens/Reservations';
-import { AuthContext } from '../carpark-ui/components/context'
+import HomeScreen from '../CarParkUI/screens/Home';
+import ProfileScreen from '../CarParkUI/screens/Profile';
+import ReservationsScreen from '../CarParkUI/screens/Reservations';
+import { AuthContext } from '../CarParkUI/components/context'
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
