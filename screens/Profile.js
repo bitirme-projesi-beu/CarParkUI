@@ -8,10 +8,11 @@ import {
   View,
   Text,
   StatusBar,
-  Button,
+  
 } from 'react-native';
 import { TextInput, TouchableOpacity } from 'react-native-gesture-handler';
 import {AuthContext} from '../components/context'
+import { IconButton,Button } from 'react-native-paper';
 const ProfileScreen = ({navigation}) => {
 
 
@@ -27,11 +28,9 @@ const ProfileScreen = ({navigation}) => {
         <Text> BEN ProfileScreen HOŞGELDİN GARDAŞ</Text>
         <Text> BEN ProfileScreen HOŞGELDİN GARDAŞ</Text>
         <View style={styles.butonExitView}>
-        <TouchableOpacity
-            style= {styles.touchableExitButton}
-            onPress={() => {signOut()}}>
-            <Text style={styles.exitButtonText}>Çıkış Yap</Text>
-            </TouchableOpacity>
+        <Button icon="door" mode="outlined" color='#FF6633' labelStyle={styles.butonExitText} style={styles.butonExit} onPress={() =>{signOut()}} >
+        Çıkış Yap
+        </Button>
         </View>
     </View>
   );
@@ -61,12 +60,20 @@ const ProfileScreen = ({navigation}) => {
         flex: 1,
         justifyContent: 'flex-end',
         marginBottom: 36,
-        alignItems:'center'
+        alignItems:'center',
     },
     exitButtonText:{
-
         color:'#fff',
         fontSize:20,
         fontWeight:"normal",
     },
+    butonExit:{
+      paddingLeft:20,
+      paddingRight:20,
+      borderWidth:2
+    },
+    butonExitText:{
+      fontSize:20,
+      fontWeight:"bold",
+    }
   });
