@@ -12,6 +12,7 @@ import {
 } from 'react-native';
 import { TextInput, TouchableOpacity } from 'react-native-gesture-handler';
 import {AuthContext} from '../components/context'
+import * as Animatable from 'react-native-animatable';
 
 
 const SignInScreen = ({navigation}) => {
@@ -21,10 +22,14 @@ const SignInScreen = ({navigation}) => {
 
   return (
     <View style={styles.container}>
+        <StatusBar 
+            backgroundColor= '#2E304F'
+            barStyle='light-content'
+        />
         <View style={styles.header}> 
-            <Text style={styles.text_header}>Park Uygulamasına Hoş Geldin</Text>
+            <Animatable.Text style={styles.text_header} animation="lightSpeedIn">Giriş yap ve müsait otoparkları keşfet.</Animatable.Text>
         </View>
-        <View style={styles.footer}>
+        <Animatable.View style={styles.footer} animation="fadeInUpBig">
             <Text style={styles.text_footer}>E-Mail</Text>
             <View style={styles.action}>
                 <TextInput 
@@ -47,19 +52,18 @@ const SignInScreen = ({navigation}) => {
             <TouchableOpacity
             style= {styles.touchableButton}
             onPress={() => {signIn()}}>
-            <Text style= {styles.touchableButtonText}
-            >Giriş Yap</Text>
+            <Text style= {styles.touchableButtonSignIn}>Giriş Yap</Text>
             </TouchableOpacity>
             <TouchableOpacity
-            style= {styles.touchableButton}
+            style= {styles.touchableButtonSignUp}
             onPress={() => navigation.navigate("SignUp")}
             >
-                <Text style= {styles.touchableButtonText}>Üye Ol</Text>
+                <Text style= {styles.touchableButtonSignUpText}>Üye Ol</Text>
             </TouchableOpacity>
             </View>
 
 
-        </View> 
+        </Animatable.View> 
     </View>
   );
   };
@@ -69,7 +73,7 @@ const SignInScreen = ({navigation}) => {
   const styles = StyleSheet.create({
     container: {
       flex: 1, 
-      backgroundColor: '#009387'
+      backgroundColor: '#2E304F'
     },
     header: {
         flex: 1,
@@ -88,7 +92,7 @@ const SignInScreen = ({navigation}) => {
     text_header: {
         color: '#fff',
         fontWeight: 'bold',
-        fontSize: 30
+        fontSize: 30,
     },
     text_footer: {
         color: '#05375a',
@@ -136,19 +140,35 @@ const SignInScreen = ({navigation}) => {
         fontWeight: 'bold'
     },
     touchableButton:{
-        marginTop:20,
+        marginTop:10,
         width:300,
         paddingTop:8,
         paddingBottom:8,
-        borderWidth: 1,
-        borderColor:'#BABABA',
+        borderWidth: 2,
+        borderColor:'#3399FF',
         borderRadius:8,
         alignItems:"center",
-        backgroundColor:'#9999ff',
+        backgroundColor:'#3399FF',
     },
-    touchableButtonText: {
+    touchableButtonSignUp:{
+        marginTop:10,
+        width:300,
+        paddingTop:8,
+        paddingBottom:8,
+        borderWidth: 2,
+        borderColor:'#FF6633',
+        borderRadius:8,
+        alignItems:"center",
+        backgroundColor:'#FF6633',
+    },
+    touchableButtonSignIn: {
         color:'#fff',
         fontSize:20,
-        fontWeight:"bold",
-    }
+        fontWeight:"normal",
+    },    
+    touchableButtonSignUpText: {
+        color:'#fff',
+        fontSize:20,
+        fontWeight:"normal",
+    },
   });
