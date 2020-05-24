@@ -22,7 +22,7 @@ const SignInScreen = ({navigation}) => {
   return (
     <View style={styles.container}>
         <StatusBar 
-            backgroundColor= '#009387'
+            backgroundColor= '#2E304F'
             barStyle='light-content'
         />
         <View style={styles.header}> 
@@ -72,7 +72,7 @@ const SignInScreen = ({navigation}) => {
   const styles = StyleSheet.create({
     container: {
       flex: 1, 
-      backgroundColor: '#009387'
+      backgroundColor: '#2E304F'
     },
     header: {
         flex: 1,
