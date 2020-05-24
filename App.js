@@ -27,7 +27,7 @@ import {
   DebugInstructions,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import Icon from 'react-native-vector-icons/Ionicons';
 import RootStackScreen from '../CarParkUI/screens/RootStackScreen';
 
 import HomeScreen from '../CarParkUI/screens/Home';
@@ -81,27 +81,37 @@ const App = () => {
     //     <Drawer.Screen name="Reservations" component={ReservationsScreen} />
     //   </Drawer.Navigator> 
     <Tab.Navigator
-    initialRouteName="Feed"
+    initialRouteName="Home"
     activeColor="#e91e63"
     style={{ backgroundColor: 'tomato' }}
   >
-    <Tab.Screen
-      name="Home"
-      component={HomeScreen}
+        <Tab.Screen
+      name="Profile"
+      component={ProfileScreen}
       options={{
-        tabBarLabel: 'Home',
+        tabBarLabel: 'Harita',
         tabBarIcon: ({ color }) => (
-          <MaterialCommunityIcons name="home" color={color} size={26} />
+          <Icon name="ios-home" color={color} size={26} />
         ),
       }}
     />
     <Tab.Screen
-      name="Profile"
-      component={ProfileScreen}
+      name="Home"
+      component={HomeScreen}
       options={{
-        tabBarLabel: 'Profile',
+        tabBarLabel: 'Profil',
         tabBarIcon: ({ color }) => (
-          <MaterialCommunityIcons name="account" color={color} size={26} />
+          <Icon name="ios-home" color={color} size={26} />
+        ),
+      }}
+    />
+    <Tab.Screen
+      name="Reservations"
+      component={ReservationsScreen}
+      options={{
+        tabBarLabel: 'Rezervasyonlarım',
+        tabBarIcon: ({ color }) => (
+          <Icon name="ios-home" color={color} size={26} />
         ),
       }}
     />
