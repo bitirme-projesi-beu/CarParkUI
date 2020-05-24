@@ -82,16 +82,16 @@ const App = () => {
     //   </Drawer.Navigator> 
     <Tab.Navigator
     initialRouteName="Home"
-    activeColor="#e91e63"
-    style={{ backgroundColor: 'tomato' }}
+    activeColor="#fff"
   >
         <Tab.Screen
       name="Profile"
       component={ProfileScreen}
       options={{
-        tabBarLabel: 'Harita',
+        tabBarLabel: 'Profil',
+        tabBarColor:'#009387',
         tabBarIcon: ({ color }) => (
-          <Icon name="ios-home" color={color} size={26} />
+          <Icon name="md-contact" color={color} size={26} />
         ),
       }}
     />
@@ -99,9 +99,9 @@ const App = () => {
       name="Home"
       component={HomeScreen}
       options={{
-        tabBarLabel: 'Profil',
+        tabBarLabel: 'Harita',
         tabBarIcon: ({ color }) => (
-          <Icon name="ios-home" color={color} size={26} />
+          <Icon name="md-pin" color={color} size={26} />
         ),
       }}
     />
@@ -111,7 +111,7 @@ const App = () => {
       options={{
         tabBarLabel: 'Rezervasyonlarım',
         tabBarIcon: ({ color }) => (
-          <Icon name="ios-home" color={color} size={26} />
+          <Icon name="md-list" color={color} size={26} />
         ),
       }}
     />
