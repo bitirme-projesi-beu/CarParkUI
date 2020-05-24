@@ -12,6 +12,9 @@ const RootStackScreen = ({navigation}) => {
   return (
         <RootStack.Navigator>
         <RootStack.Screen name="Splash" component={SplashScreen} options={{
+          headerBackTitleStyle:{
+              backgroundColor:'#fff',
+          },
         headerShown:false}}/>
         <RootStack.Screen name="Login" component={SignInScreen} options={{
         headerShown:false}}/>

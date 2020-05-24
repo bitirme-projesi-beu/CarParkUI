@@ -21,6 +21,10 @@ const SingUpScreen = ({navigation}) => {
 
   return (
     <View style={styles.container}>
+                <StatusBar 
+            backgroundColor= '#009387'
+            barStyle='light-content'
+        />
         <View style={styles.header}>
         <Text style={styles.text_header}>Yeni Üyelik</Text>
         </View>
@@ -62,16 +66,16 @@ const SingUpScreen = ({navigation}) => {
             </View>
             <View style={styles.button}>
             <TouchableOpacity
-            style= {styles.touchableButton}
+            style= {styles.touchableButtonSignUp}
             onPress={() => {signUp()}}
             >
-                <Text style= {styles.touchableButtonText}>Üye Ol</Text>
+                <Text style= {styles.touchableButtonSignUpText}>Üye Ol</Text>
             </TouchableOpacity>
             <TouchableOpacity
             style= {styles.touchableButton}
             onPress={() => navigation.navigate("Login")}
             >
-                <Text style= {styles.touchableButtonText}>Giriş Yap</Text>
+                <Text style= {styles.touchableButtonSignIn}>Giriş Yap</Text>
             </TouchableOpacity>
             </View>
             </ScrollView>
@@ -138,7 +142,7 @@ const SingUpScreen = ({navigation}) => {
     },
     button: {
         alignItems: 'center',
-        marginTop: 30,
+        marginTop: 20,
         width:'100%',
     },
     signIn: {
@@ -153,20 +157,36 @@ const SingUpScreen = ({navigation}) => {
         fontWeight: 'bold'
     },
     touchableButton:{
-        marginTop:20,
+        marginTop:10,
         width:300,
         paddingTop:8,
         paddingBottom:8,
-        borderWidth: 1,
-        borderColor:'#BABABA',
+        borderWidth: 2,
+        borderColor:'#3399FF',
         borderRadius:8,
         alignItems:"center",
-        backgroundColor:'#9999ff',
+        backgroundColor:'#3399FF',
     },
-    touchableButtonText: {
+    touchableButtonSignUp:{
+        marginTop:10,
+        width:300,
+        paddingTop:8,
+        paddingBottom:8,
+        borderWidth: 2,
+        borderColor:'#FF6633',
+        borderRadius:8,
+        alignItems:"center",
+        backgroundColor:'#FF6633',
+    },
+    touchableButtonSignIn: {
         color:'#fff',
         fontSize:20,
-        fontWeight:"bold",
+        fontWeight:"normal",
+    },    
+    touchableButtonSignUpText: {
+        color:'#fff',
+        fontSize:20,
+        fontWeight:"normal",
     },
     scrollViewStyle: {
         marginTop:-15,

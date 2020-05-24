@@ -21,6 +21,10 @@ const SignInScreen = ({navigation}) => {
 
   return (
     <View style={styles.container}>
+        <StatusBar 
+            backgroundColor= '#009387'
+            barStyle='light-content'
+        />
         <View style={styles.header}> 
             <Text style={styles.text_header}>Park Uygulamasına Hoş Geldin</Text>
         </View>
@@ -47,14 +51,13 @@ const SignInScreen = ({navigation}) => {
             <TouchableOpacity
             style= {styles.touchableButton}
             onPress={() => {signIn()}}>
-            <Text style= {styles.touchableButtonText}
-            >Giriş Yap</Text>
+            <Text style= {styles.touchableButtonSignIn}>Giriş Yap</Text>
             </TouchableOpacity>
             <TouchableOpacity
-            style= {styles.touchableButton}
+            style= {styles.touchableButtonSignUp}
             onPress={() => navigation.navigate("SignUp")}
             >
-                <Text style= {styles.touchableButtonText}>Üye Ol</Text>
+                <Text style= {styles.touchableButtonSignUpText}>Üye Ol</Text>
             </TouchableOpacity>
             </View>
 
@@ -136,19 +139,35 @@ const SignInScreen = ({navigation}) => {
         fontWeight: 'bold'
     },
     touchableButton:{
-        marginTop:20,
+        marginTop:10,
         width:300,
         paddingTop:8,
         paddingBottom:8,
-        borderWidth: 1,
-        borderColor:'#BABABA',
+        borderWidth: 2,
+        borderColor:'#3399FF',
         borderRadius:8,
         alignItems:"center",
-        backgroundColor:'#9999ff',
+        backgroundColor:'#3399FF',
     },
-    touchableButtonText: {
+    touchableButtonSignUp:{
+        marginTop:10,
+        width:300,
+        paddingTop:8,
+        paddingBottom:8,
+        borderWidth: 2,
+        borderColor:'#FF6633',
+        borderRadius:8,
+        alignItems:"center",
+        backgroundColor:'#FF6633',
+    },
+    touchableButtonSignIn: {
         color:'#fff',
         fontSize:20,
-        fontWeight:"bold",
-    }
+        fontWeight:"normal",
+    },    
+    touchableButtonSignUpText: {
+        color:'#fff',
+        fontSize:20,
+        fontWeight:"normal",
+    },
   });

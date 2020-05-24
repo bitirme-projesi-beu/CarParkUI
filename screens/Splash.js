@@ -18,6 +18,10 @@ import { TextInput, TouchableOpacity } from 'react-native-gesture-handler';
 const SplashScreen = ({ navigation }) => {
     return (
         <View style={styles.container}>
+            <StatusBar 
+            backgroundColor='#ff8d00'
+            barStyle='light-content'
+            />
             <View style={styles.header}>
                 <Text>Header</Text>
                 <Image source={require('../assests/logo.png.png')}
@@ -27,7 +31,7 @@ const SplashScreen = ({ navigation }) => {
 
             </View>
             <View style={styles.footer}>
-                <Text>Lets Started</Text>
+                <Text style={styles.welcomeText}>Lets Started</Text>
                 <TouchableOpacity
             style= {styles.touchableButton}
             onPress={() => navigation.navigate("Login")}
@@ -138,5 +142,9 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 20,
     fontWeight: "bold",
+},
+welcomeText:{
+    fontSize:25,
+    color:'#fff'
 }
 });
