@@ -34,13 +34,13 @@ const SplashScreen = ({ navigation }) => {
             <View style={styles.footer}>
             <Animatable.Text style={styles.welcomeText}animation="fadeInLeft" >Aracına yer bulmak  </Animatable.Text>
             <Animatable.Text style={styles.welcomeTextBottomLine}animation="fadeInLeft" >artık çok kolay.  </Animatable.Text>
-                <TouchableOpacity
+                <Animatable.View animation="fadeInUpBig"><TouchableOpacity
             style= {styles.touchableButton}
             onPress={() => navigation.navigate("Login")}
             >
                 <Text style= {styles.touchableButtonText}>Başlayalım</Text>
             </TouchableOpacity>
-
+            </Animatable.View>
             </View>
 
         </View>
