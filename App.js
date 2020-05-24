@@ -8,6 +8,7 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
+import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import React, { useState, useEffect } from 'react';
 import {
   SafeAreaView,
@@ -26,7 +27,7 @@ import {
   DebugInstructions,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
-
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import RootStackScreen from '../CarParkUI/screens/RootStackScreen';
 
 import HomeScreen from '../CarParkUI/screens/Home';
@@ -36,6 +37,7 @@ import { AuthContext } from '../CarParkUI/components/context'
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
+
 const App = () => {
   const [isLoading,setIsLoading] = React.useState(true);
   const [userToken,setUserToken] = React.useState(null);
