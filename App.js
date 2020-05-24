@@ -36,8 +36,7 @@ import ReservationsScreen from '../CarParkUI/screens/Reservations';
 import { AuthContext } from '../CarParkUI/components/context'
 
 const Drawer = createDrawerNavigator();
-const Stack = createStackNavigator();
-
+const Tab = createMaterialBottomTabNavigator();
 const App = () => {
   const [isLoading,setIsLoading] = React.useState(true);
   const [userToken,setUserToken] = React.useState(null);
@@ -76,11 +75,40 @@ const App = () => {
     <NavigationContainer>
       {userToken === null ? (
       <RootStackScreen/>) :
-     <Drawer.Navigator initialRouteName="Home">
-        <Drawer.Screen name="Home" component={HomeScreen} />
-        <Drawer.Screen name="Profile" component={ProfileScreen} />
-        <Drawer.Screen name="Reservations" component={ReservationsScreen} />
-      </Drawer.Navigator> }
+    //  <Drawer.Navigator initialRouteName="Home">
+    //     <Drawer.Screen name="Home" component={HomeScreen} />
+    //     <Drawer.Screen name="Profile" component={ProfileScreen} />
+    //     <Drawer.Screen name="Reservations" component={ReservationsScreen} />
+    //   </Drawer.Navigator> 
+    <Tab.Navigator
+    initialRouteName="Feed"
+    activeColor="#e91e63"
+    style={{ backgroundColor: 'tomato' }}
+  >
+    <Tab.Screen
+      name="Home"
+      component={HomeScreen}
+      options={{
+        tabBarLabel: 'Home',
+        tabBarIcon: ({ color }) => (
+          <MaterialCommunityIcons name="home" color={color} size={26} />
+        ),
+      }}
+    />
+    <Tab.Screen
+      name="Profile"
+      component={ProfileScreen}
+      options={{
+        tabBarLabel: 'Profile',
+        tabBarIcon: ({ color }) => (
+          <MaterialCommunityIcons name="account" color={color} size={26} />
+        ),
+      }}
+    />
+  </Tab.Navigator>
+
+  }
+    
     </NavigationContainer>
     </AuthContext.Provider>
   );
