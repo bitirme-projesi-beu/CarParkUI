@@ -12,6 +12,7 @@ import {
 } from 'react-native';
 import { TextInput, TouchableOpacity } from 'react-native-gesture-handler';
 import {AuthContext} from '../components/context'
+import * as Animatable from 'react-native-animatable';
 
 
 const SignInScreen = ({navigation}) => {
@@ -26,9 +27,9 @@ const SignInScreen = ({navigation}) => {
             barStyle='light-content'
         />
         <View style={styles.header}> 
-            <Text style={styles.text_header}>Park Uygulamasına Hoş Geldin</Text>
+            <Animatable.Text style={styles.text_header} animation="lightSpeedIn">Giriş yap ve müsait otoparkları keşfet.</Animatable.Text>
         </View>
-        <View style={styles.footer}>
+        <Animatable.View style={styles.footer} animation="fadeInUpBig">
             <Text style={styles.text_footer}>E-Mail</Text>
             <View style={styles.action}>
                 <TextInput 
@@ -62,7 +63,7 @@ const SignInScreen = ({navigation}) => {
             </View>
 
 
-        </View> 
+        </Animatable.View> 
     </View>
   );
   };
@@ -91,7 +92,7 @@ const SignInScreen = ({navigation}) => {
     text_header: {
         color: '#fff',
         fontWeight: 'bold',
-        fontSize: 30
+        fontSize: 30,
     },
     text_footer: {
         color: '#05375a',

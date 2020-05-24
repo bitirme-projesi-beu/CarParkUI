@@ -12,7 +12,7 @@ import {
   Button,
 } from 'react-native';
 import { TextInput, TouchableOpacity } from 'react-native-gesture-handler';
-
+import * as Animatable from 'react-native-animatable';
 import {AuthContext} from '../components/context';
 
 
@@ -22,14 +22,14 @@ const SingUpScreen = ({navigation}) => {
   return (
     <View style={styles.container}>
                 <StatusBar 
-            backgroundColor= '#009387'
+            backgroundColor= '#2E304F'
             barStyle='light-content'
         />
         <View style={styles.header}>
-        <Text style={styles.text_header}>Yeni Üyelik</Text>
+        <Animatable.Text style={styles.text_header} animation="lightSpeedIn">Aracına yer ararken artık vakit kaybetmeyeceksin.</Animatable.Text>
         </View>
         
-        <View style={styles.footer}>
+        <Animatable.View style={styles.footer} animation="fadeInUpBig">
             <ScrollView style={styles.scrollViewStyle}>
         <Text style={[styles.text_footer, {marginTop:10}]}>Ad</Text>
             <View style={styles.action}>
@@ -79,7 +79,7 @@ const SingUpScreen = ({navigation}) => {
             </TouchableOpacity>
             </View>
             </ScrollView>
-        </View>
+        </Animatable.View>
     </View>
     );
   };
@@ -90,7 +90,7 @@ const SingUpScreen = ({navigation}) => {
   const styles = StyleSheet.create({
     container: {
       flex: 1, 
-      backgroundColor: '#009387'
+      backgroundColor: '#2E304F'
     },
     header: {
         flex: 1,

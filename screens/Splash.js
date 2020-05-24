@@ -14,6 +14,7 @@ import {
     Image
 } from 'react-native';
 import { TextInput, TouchableOpacity } from 'react-native-gesture-handler';
+import * as Animatable from 'react-native-animatable';
 
 const SplashScreen = ({ navigation }) => {
     return (
@@ -23,14 +24,16 @@ const SplashScreen = ({ navigation }) => {
             barStyle='light-content'
             />
             <View style={styles.header}>
-                <Image source={require('../assests/logo.png.png')}
+                <Animatable.Image source={require('../assests/logo.png.png')}
+                animation="fadeInDown"
                     style={styles.logo}
                     resizeMode="center"
                 />
 
             </View>
             <View style={styles.footer}>
-                <Text style={styles.welcomeText}>Sana Ait Otopark</Text>
+            <Animatable.Text style={styles.welcomeText}animation="fadeInLeft" >Aracına yer bulmak  </Animatable.Text>
+            <Animatable.Text style={styles.welcomeTextBottomLine}animation="fadeInLeft" >artık çok kolay.  </Animatable.Text>
                 <TouchableOpacity
             style= {styles.touchableButton}
             onPress={() => navigation.navigate("Login")}
@@ -78,7 +81,7 @@ const styles = StyleSheet.create({
     paddingBottom: -5,
     },
     touchableButton: {
-    marginTop:0,
+    marginTop:-20,
     marginLeft:20,
     width: 200,
     paddingTop: 8,
@@ -98,5 +101,11 @@ welcomeText:{
     fontSize:25,
     color:'#2E304F',
     padding:20
+    },
+    welcomeTextBottomLine:{
+        fontSize:25,
+        color:'#2E304F',
+        padding:20,
+        marginTop:-80,
     }
 });
