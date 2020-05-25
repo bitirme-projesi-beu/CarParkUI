@@ -56,7 +56,7 @@ const SingUpScreen = ({navigation}) => {
                 />
             </View>
             <View style={styles.action}>
-            <Icon name="textbox-password" size={30} color="#2E304F" />
+            <Icon name="key-variant" size={30} color="#2E304F" />
             <TextInput 
                 style={styles.textInput} 
                 secureTextEntry

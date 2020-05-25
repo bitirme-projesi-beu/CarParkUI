@@ -11,23 +11,51 @@ import {
   Button,
 } from 'react-native';
 import { TextInput, TouchableOpacity } from 'react-native-gesture-handler';
+import MapView, { 
+PROVIDER_GOOGLE, 
+Marker, 
+Callout 
+} from 'react-native-maps'; 
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const HomeScreen = ({navigation}) => {
   return (
-    <View style={styles.container}>
-        <Text> BEN HOME HOŞGELDİN GARDAŞ</Text>
-        
-    </View>
+     <MapView
+       provider={PROVIDER_GOOGLE} // remove if not using Google Maps
+       style={styles.map}
+       region={{
+         latitude: 41.117155,
+         longitude: 29.004221,
+         latitudeDelta: 0.015,
+         longitudeDelta: 0.0121,
+       }}
+     >
+         <Marker 
+         coordinate={{
+            latitude: 41.117155,
+            longitude: 29.004221,
+         }}
+        image={require('../assests/marker.png')}
+        title="Test"
+        description="deneme"
+        />
+     </MapView>
   );
   };
 
   export default HomeScreen;
 
-  const styles = StyleSheet.create({
+  const styles = StyleSheet.create({ 
+      map: {
+    ...StyleSheet.absoluteFillObject,
+  },
     container: {
-      flex: 1, 
-      backgroundColor: '#FFF'
-    },
+        ...StyleSheet.absoluteFillObject,
+        height: 800,
+        width:'100%',
+        justifyContent: 'center',
+        alignItems: 'center',
+      },
     header: {
         flex: 1,
         justifyContent: 'flex-end',
