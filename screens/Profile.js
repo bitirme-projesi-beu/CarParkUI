@@ -24,9 +24,9 @@ const ProfileScreen = ({navigation}) => {
             backgroundColor= '#2E304F'
             barStyle='light-content'
         />
-        <Text> BEN ProfileScreen HOŞGELDİN GARDAŞ</Text>
-        <Text> BEN ProfileScreen HOŞGELDİN GARDAŞ</Text>
-        <Text> BEN ProfileScreen HOŞGELDİN GARDAŞ</Text>
+        <Text style={{fontSize:50}}> BEN </Text>
+        <Text style={{fontSize:50, color:'#FF6633'}}> PROFİL</Text>
+        <Text style={{fontSize:50}}> EKRANIYIM</Text>
         <View style={styles.butonExitView}>
         <Button icon="door" mode="outlined" color='#FF6633' labelStyle={styles.butonExitText} style={styles.butonExit} onPress={() =>{signOut()}} >
         Çıkış Yap

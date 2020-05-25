@@ -3,7 +3,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import React from 'react';
 
 import SignInScreen from './SignIn';
-import SignUpScreen from './SignUp';
+import SignUpScreen from './SignUp2';
 import SplashScreen from './Splash';
 
 const RootStack = createStackNavigator();

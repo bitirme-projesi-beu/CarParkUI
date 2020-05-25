@@ -13,7 +13,7 @@ import {
 import { TextInput, TouchableOpacity } from 'react-native-gesture-handler';
 import {AuthContext} from '../components/context'
 import * as Animatable from 'react-native-animatable';
-
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const SignInScreen = ({navigation}) => {
 
@@ -30,8 +30,8 @@ const SignInScreen = ({navigation}) => {
             <Animatable.Text style={styles.text_header} animation="lightSpeedIn">Giriş yap ve müsait otoparkları keşfet.</Animatable.Text>
         </View>
         <Animatable.View style={styles.footer} animation="fadeInUpBig">
-            <Text style={styles.text_footer}>E-Mail</Text>
             <View style={styles.action}>
+            <Icon name="email" size={30} color="#2E304F" />
                 <TextInput 
                 style={styles.textInput} 
                 placeholder="E-Mail"
@@ -39,8 +39,8 @@ const SignInScreen = ({navigation}) => {
                 />
             </View>
 
-            <Text style={[styles.text_footer, {marginTop:20}]}>Şifre</Text>
-            <View style={styles.action}>
+            <View style={[styles.action, {marginTop:30}]}>
+            <Icon name="textbox-password" size={30} color="#2E304F" />
                 <TextInput 
                 style={styles.textInput} 
                 secureTextEntry
@@ -100,7 +100,7 @@ const SignInScreen = ({navigation}) => {
     },
     action: {
         flexDirection: 'row',
-        marginTop: 10,
+        marginTop:10,
         borderBottomWidth: 2,
         borderBottomColor: '#A9A9A9',
         paddingBottom: 5,

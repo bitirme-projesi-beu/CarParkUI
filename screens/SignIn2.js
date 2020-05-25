@@ -1,5 +1,4 @@
 import React from 'react';
-
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import {
@@ -11,54 +10,39 @@ import {
   StatusBar,
   Button,
 } from 'react-native';
-import { TextInput, TouchableOpacity } from 'react-native-gesture-handler';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import {AuthContext} from '../components/context'
 import * as Animatable from 'react-native-animatable';
-import {AuthContext} from '../components/context';
+import { TextInput } from 'react-native-paper';
 
 
-const SingUpScreen = ({navigation}) => {
-    const {signUp} = React.useContext(AuthContext);
+const SignInScreen = ({navigation}) => {
+
+
+    const {signIn} = React.useContext(AuthContext);
 
   return (
     <View style={styles.container}>
-                <StatusBar 
+        <StatusBar 
             backgroundColor= '#2E304F'
             barStyle='light-content'
         />
-        <View style={styles.header}>
-        <Animatable.Text style={styles.text_header} animation="lightSpeedIn">Aracına yer ararken artık vakit kaybetmeyeceksin</Animatable.Text>
+        <View style={styles.header}> 
+            <Animatable.Text style={styles.text_header} animation="lightSpeedIn">Giriş yap ve müsait otoparkları keşfet.</Animatable.Text>
         </View>
-        
         <Animatable.View style={styles.footer} animation="fadeInUpBig">
-            <ScrollView style={styles.scrollViewStyle}>
-        <Text style={[styles.text_footer, {marginTop:10}]}>Ad</Text>
-            <View style={styles.action}>
+            <View style={[styles.action , {marginTop:20}]}>
                 <TextInput 
-                style={styles.textInput} 
-                placeholder="Ad"
-                autoCapitalize="none"
-                />
-            </View>
-            <Text style={[styles.text_footer, {marginTop:10}]}>Soyad</Text>
-            <View style={styles.action}>
-                <TextInput 
-                style={styles.textInput} 
-                placeholder="Soyad"
-                autoCapitalize="none"
-                />
-            </View>
-            <Text style={[styles.text_footer, {marginTop:10}]}>E-Mail</Text>
-            <View style={styles.action}>
-                <TextInput 
+                mode='outlined'
                 style={styles.textInput} 
                 placeholder="E-Mail"
                 autoCapitalize="none"
                 />
             </View>
-            <Text style={[styles.text_footer, {marginTop:10}]}>Şifre</Text>
-            <View style={styles.action}>
+            <View style={[styles.action, {marginTop:20}]}>
                 <TextInput 
                 style={styles.textInput} 
+                mode='outlined'
                 secureTextEntry
                 placeholder="Şifre"
                 autoCapitalize="none"
@@ -66,27 +50,26 @@ const SingUpScreen = ({navigation}) => {
             </View>
             <View style={styles.button}>
             <TouchableOpacity
+            style= {styles.touchableButton}
+            onPress={() => {signIn()}}>
+            <Text style= {styles.touchableButtonSignIn}>Giriş Yap</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
             style= {styles.touchableButtonSignUp}
-            onPress={() => {signUp()}}
+            onPress={() => navigation.navigate("SignUp")}
             >
                 <Text style= {styles.touchableButtonSignUpText}>Üye Ol</Text>
             </TouchableOpacity>
-            <TouchableOpacity
-            style= {styles.touchableButton}
-            onPress={() => navigation.navigate("Login")}
-            >
-                <Text style= {styles.touchableButtonSignIn}>Giriş Yap</Text>
-            </TouchableOpacity>
             </View>
-            </ScrollView>
-        </Animatable.View>
+
+
+        </Animatable.View> 
     </View>
-    );
+  );
   };
 
-  export default SingUpScreen;
+  export default SignInScreen;
 
-  
   const styles = StyleSheet.create({
     container: {
       flex: 1, 
@@ -109,7 +92,7 @@ const SingUpScreen = ({navigation}) => {
     text_header: {
         color: '#fff',
         fontWeight: 'bold',
-        fontSize: 30
+        fontSize: 30,
     },
     text_footer: {
         color: '#05375a',
@@ -117,10 +100,7 @@ const SingUpScreen = ({navigation}) => {
     },
     action: {
         flexDirection: 'row',
-        marginTop: 5,
-        borderBottomWidth: 2,
-        borderBottomColor: '#A9A9A9',
-        paddingBottom: 5,
+        marginTop: 10,
     },
     actionError: {
         flexDirection: 'row',
@@ -131,7 +111,7 @@ const SingUpScreen = ({navigation}) => {
     },
     textInput: {
         flex: 1,
-        marginTop:-15,
+        marginTop: Platform.OS === 'ios' ? 0 : -12,
         paddingLeft: 5,
         color: '#05375a',
         paddingBottom:-5,
@@ -142,7 +122,7 @@ const SingUpScreen = ({navigation}) => {
     },
     button: {
         alignItems: 'center',
-        marginTop: 20,
+        marginTop: 30,
         width:'100%',
     },
     signIn: {
@@ -188,8 +168,4 @@ const SingUpScreen = ({navigation}) => {
         fontSize:20,
         fontWeight:"normal",
     },
-    scrollViewStyle: {
-        marginTop:-15,
-        marginBottom:-10,
-    }
   });
