@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component, useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import {
@@ -14,11 +14,23 @@ import { TextInput, TouchableOpacity } from 'react-native-gesture-handler';
 import MapView, { 
 PROVIDER_GOOGLE, 
 Marker, 
+Polygon,
 Callout 
 } from 'react-native-maps'; 
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import Geolocation from '@react-native-community/geolocation';
+import Carousel from 'react-native-snap-carousel';
 
-const HomeScreen = ({navigation}) => {
+
+
+const HomeScreen = ({navigation})  => {
+
+    const kordinatlar = [
+            { name : '1', latitude : 41.130951, longitude : 28.997386},
+            { name : '2', latitude : 41.124841, longitude : 29.013136},
+            { name : '3', latitude : 41.118957, longitude : 28.983095},
+        ];
+
   return (
      <MapView
        provider={PROVIDER_GOOGLE} // remove if not using Google Maps
@@ -30,6 +42,15 @@ const HomeScreen = ({navigation}) => {
          longitudeDelta: 0.0121,
        }}
      >
+        <Marker
+        coordinate={kordinatlar[0]}
+        strokeWidth={3} 
+        image={require('../assests/marker.png')}
+        title="Test"
+        description="deneme"
+        />
+
+
          <Marker 
          coordinate={{
             latitude: 41.117155,
