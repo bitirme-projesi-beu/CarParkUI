@@ -30,14 +30,17 @@ class HomeScreen extends Component{
     state={
         clickToShowCarousel :"none",
         kordinatlar : [
-            { id:'1', name : 'Güzel Yer',rate:2.3,maxCapacity:30,activeCapacity:5 ,latitude : 41.130951, longitude : 28.997386},
-            { id:'2', name : 'Leş Yer', rate:3.3,maxCapacity:18,activeCapacity:16 ,latitude : 41.117155, longitude : 29.004221},
-            { id:'3', name : 'Mükemmel Yer', rate:1.3,maxCapacity:25,activeCapacity:13 ,latitude : 41.118957, longitude : 28.983095},
-            { id:'4', name : 'Hoş Yer', rate:5,maxCapacity:10,activeCapacity:8 ,latitude : 41.124841, longitude : 29.013136},
-
-
-
-        ]
+            { id:'1', name : 'Güzel Yer',rate:2.3,maxCapacity:30,activeCapacity:5,price:10 ,latitude : 41.130951, longitude : 28.997386},
+            { id:'2', name : 'Leş Yer', rate:3.3,maxCapacity:18,activeCapacity:16, price:10,latitude : 41.117155, longitude : 29.004221},
+            { id:'3', name : 'Mükemmel Yer', rate:1.3,maxCapacity:25,activeCapacity:13 ,price:10,latitude : 41.118957, longitude : 28.983095},
+            { id:'4', name : 'Hoş Yer', rate:5,maxCapacity:10,activeCapacity:8,price:10 ,latitude : 41.124841, longitude : 29.013136},
+        ],
+        region :{
+            latitude : 41.130951, 
+            longitude : 28.997386,
+            latitudeDelta: 0.018,
+            longitudeDelta: 0.019,
+        }
     }
 
     componentDidMount(){
@@ -59,17 +62,6 @@ class HomeScreen extends Component{
                 this.locateCurrentPosition();
             }
         }
-        if(response==='blocked')
-        {
-            let region ={
-                latitude:41.130951,
-                longitude:28.994386,
-                latitudeDelta: 0.0822,
-                longitudeDelta: 0.0321,
-            }
-
-        }
-        
     }
 
     locateCurrentPosition = () => {
@@ -77,8 +69,8 @@ class HomeScreen extends Component{
             let region ={
                 latitude:position.coords.latitude,
                 longitude:position.coords.longitude,
-                latitudeDelta: 0.0822,
-                longitudeDelta: 0.0321,
+                latitudeDelta: 0.018,
+                longitudeDelta: 0.019,
             }
 
         })
@@ -88,8 +80,8 @@ class HomeScreen extends Component{
         this._map.animateToRegion({
             latitude:location.latitude,
             longitude:location.longitude,
-            latitudeDelta: 0.0822,
-            longitudeDelta: 0.0321,
+            latitudeDelta: 0.010,
+            longitudeDelta: 0.011,
         });
         this._carousel.snapToItem(index);
         console.log(index);
@@ -99,31 +91,50 @@ class HomeScreen extends Component{
           });
     }
     changeCarouselDisplay = (index) => {
-
+        this.setState({
+            ...this.state,
+            clickToShowCarousel: "none"
+          });
     }
     renderCarouselItem = ({item}) => 
     <View style={this.carouselCard()}>
-         <View style={styles.carouselRowHeader}>
-        <Text style={styles.carouselHeaderText}>Otopark Adı : {item.name}</Text>
-        </View>
-        <View style={styles.carouselRow}>
-            <Text style={styles.carouselRowText}>Puanı = </Text>
-            <Text style={styles.carouselActiveCapacityText}>{item.rate}</Text>
-            <Text style={styles.carouselRowTextSlash}> / </Text>
-            <Text style={styles.carouselMaxCapacityText}>5</Text>
-        </View>
-        <View style={styles.carouselRow}>
-            <Text style={styles.carouselRowText}>Otopark Durumu = </Text>
-            <Text style={styles.carouselActiveCapacityText}>{item.activeCapacity}</Text>
-            <Text style={styles.carouselRowTextSlash}> / </Text>
-            <Text style={styles.carouselMaxCapacityText}>{item.maxCapacity}</Text>
-        </View>
         <View style={styles.carouselRowHeader}>
-        <Button icon="alpha-p-box-outline" mode="contained" color='#FF6633' labelStyle={styles.buttonReserveText} style={styles.buttonReserve} >
-        Rezerve Et
-        </Button>
+            <Text style={styles.carouselHeaderText}>Otopark Bilgileri</Text>
+            <View style={styles.carouselDottedLine}></View>
         </View>
 
+        <View style={styles.carouselRow}>
+            <View style={styles.carouselRowElement}><Text style={styles.carouselRowText}>Puan</Text></View>
+            <View style={styles.carouselRowElement}>
+                <Text style={styles.carouselRowText}>{item.rate}</Text>
+                <Text style={styles.carouselRowText}> / </Text>
+                <Text style={styles.carouselRowText}>5</Text>
+            </View>
+        </View>
+
+        <View style={styles.carouselRow}>
+            <View style={styles.carouselRowElement}><Text style={styles.carouselRowText}>Kapasite</Text></View>
+            <View style={styles.carouselRowElement}>
+                <Text style={styles.carouselRowText}>{item.activeCapacity}</Text>
+                <Text style={styles.carouselRowText}> / </Text>
+                <Text style={styles.carouselRowText}>{item.maxCapacity}</Text>
+            </View>
+        </View>
+
+        <View style={styles.carouselRow}>
+            <View style={styles.carouselRowElement}><Text style={styles.carouselRowText}>Saatlik Ücret</Text></View>
+                <View style={styles.carouselRowElement}>
+                    <Text style={styles.carouselRowText}>{item.price} ₺</Text>
+                </View>
+        </View>
+
+        <View style={styles.carouselRowButton}>
+            <View style={styles.carouselRowElement}>
+                <Button icon="alpha-p-box-outline" mode="contained" color='#FF6633' labelStyle={styles.buttonReserveText} style={styles.buttonReserve} >
+                Rezerve Et
+                </Button>                
+             </View>
+        </View>
     </View>
 
     onCarouselItemSelect = (index) =>{
@@ -132,8 +143,8 @@ class HomeScreen extends Component{
         this._map.animateToRegion({
             latitude:location.latitude,
             longitude:location.longitude,
-            latitudeDelta: 0.0822,
-            longitudeDelta: 0.0321,
+            latitudeDelta: 0.010,
+            longitudeDelta: 0.011,
         })
     }
     carouselCard =function(options) {
@@ -141,26 +152,24 @@ class HomeScreen extends Component{
             display:this.state.clickToShowCarousel,
             backgroundColor:'rgba(46,48,79,0.9)',
             alignItems:'center',
-            height:200,
+            height:240,
             width:300,
             padding:10,
-            borderRadius:20
+            borderRadius:20,
+            justifiyContent:"flex-start",
+            flexDirection: "column"
         }
       }
     render(){
                 return (
         <View style={styles.container}>
      <MapView
-     provider={PROVIDER_GOOGLE} // remove if not using Google Maps
+     provider={PROVIDER_GOOGLE} 
      showsUserLocation={true}
      ref={map => this._map = map}
      style={styles.map}
-     region={{
-       latitude: 41.117155,
-       longitude: 29.004221,
-       latitudeDelta: 0.0922,
-       longitudeDelta: 0.0421,
-     }}>
+     onPress={x => this.changeCarouselDisplay(x)}
+     initialRegion={this.state.region}>
     {
         this.state.kordinatlar.map((marker,index) => 
             <Marker 
@@ -216,72 +225,6 @@ class HomeScreen extends Component{
         paddingVertical: 30,
         width:'90%',
     },
-    text_header: {
-        color: '#fff',
-        fontWeight: 'bold',
-        fontSize: 30
-    },
-    text_footer: {
-        color: '#05375a',
-        fontSize: 18
-    },
-    action: {
-        flexDirection: 'row',
-        marginTop: 10,
-        borderBottomWidth: 2,
-        borderBottomColor: '#A9A9A9',
-        paddingBottom: 5,
-    },
-    actionError: {
-        flexDirection: 'row',
-        marginTop: 10,
-        borderBottomWidth: 1,
-        borderBottomColor: '#FF0000',
-        paddingBottom: 5
-    },
-    textInput: {
-        flex: 1,
-        marginTop: Platform.OS === 'ios' ? 0 : -12,
-        paddingLeft: 5,
-        color: '#05375a',
-        paddingBottom:-5,
-    },
-    errorMsg: {
-        color: '#FF0000',
-        fontSize: 14,
-    },
-    button: {
-        alignItems: 'center',
-        marginTop: 50,
-        width:'100%',
-    },
-    signIn: {
-        width: '100%',
-        height: 50,
-        justifyContent: 'center',
-        alignItems: 'center',
-        borderRadius: 10
-    },
-    textSign: {
-        fontSize: 18,
-        fontWeight: 'bold'
-    },
-    touchableButton:{
-        marginTop:20,
-        width:300,
-        paddingTop:8,
-        paddingBottom:8,
-        borderWidth: 1,
-        borderColor:'#BABABA',
-        borderRadius:8,
-        alignItems:"center",
-        backgroundColor:'#9999ff',
-    },
-    touchableButtonText: {
-        color:'#fff',
-        fontSize:20,
-        fontWeight:"bold",
-    },
     carousel:{
         position:"absolute",
         bottom:0,
@@ -292,45 +235,36 @@ class HomeScreen extends Component{
         fontSize:20,
     },
     carouselRow:{
-        marginTop:-20,
-        flex: 1,
-        alignItems: 'flex-start',
-        flexDirection: 'row',    
+        height:30,
+        width:'100%',
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        justifyContent: 'space-between',
+        alignContent: 'flex-start',
+        marginTop:8,
     },
-    carouselRowHeader:{
-        marginTop:0,
-        flex: 1,
-        alignItems: 'flex-start',
-        flexDirection: 'row',    
+    carouselRowElement:{
+        flexDirection: 'row',
+        justifyContent: 'flex-end',
+        alignItems: 'center',
     },
     carouselRowText:{
         color:'#fff',
         fontSize:18,
-        
     },
-    carouselRowTextSlash:{
-        color:'#fff',
-        fontSize:18,
+    carouselRowHeader:{
+    width:'100%',
+    paddingTop:5,
+    alignItems:"center",
     },
-    carouselActiveCapacityText:{
-        color:'#fff',
-        fontSize:18,
-    },
-    carouselMaxCapacityText:{
-        color:'#fff',
-        fontSize:18,
-    },
-    butonExitView:{
-        marginBottom:10,
-        flex: 1,
-        justifyContent: 'flex-end',
-        marginBottom: 36,
-        alignItems:'center',
-    },
-    exitButtonText:{
-        color:'#fff',
-        fontSize:18,
-        fontWeight:"normal",
+    carouselDottedLine:{
+        marginTop:4,
+        borderStyle: 'dotted',
+        borderWidth: 1,
+        borderRadius: 1,
+        borderColor:'rgba(255,255,255,0.5)',
+        height:1,
+        width:'100%', 
     },
     buttonReserve:{
       paddingLeft:20,
@@ -338,12 +272,11 @@ class HomeScreen extends Component{
       borderWidth:1
     },
     carouselRowButton:{
-        marginTop:20,
-        
+        marginTop:10,
     },
     buttonReserveText:{
       fontSize:19,
       fontWeight:"normal",
       color:'#fff'
-    }
+    },
   });
