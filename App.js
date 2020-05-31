@@ -53,7 +53,7 @@ const App = () => {
   useEffect(() => {
     setTimeout(() => {
       setIsLoading(false);
-    },1000);
+    },200);
   }, []);
 
   if(isLoading){
@@ -68,13 +68,7 @@ const App = () => {
     <AuthContext.Provider value={authContext}>
     <NavigationContainer>
       {userToken === null ? (
-      <RootStackScreen/>) :
-    //  <Drawer.Navigator initialRouteName="Home">
-    //     <Drawer.Screen name="Home" component={HomeScreen} />
-    //     <Drawer.Screen name="Profile" component={ProfileScreen} />
-    //     <Drawer.Screen name="Reservations" component={ReservationsScreen} />
-    //   </Drawer.Navigator> 
-        <HomeTabScreen/> 
+      <RootStackScreen/>) :        <HomeTabScreen/> 
   }
     
     </NavigationContainer>
