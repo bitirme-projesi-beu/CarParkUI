@@ -39,7 +39,7 @@ class ReservationsScreen extends Component{
 
 
                     <View style={styles.reservationRate}>
-                    <Button icon="star" mode="contained" color='#FF6633' labelStyle={styles.buttonRateText} style={styles.buttonRate} >
+                    <Button icon="star" mode="contained" color='#FF6633' labelStyle={styles.buttonRateText} style={styles.buttonRate} onPress={() =>{alert("s")}} >
                     Puan Ver
                     </Button>    
                     </View>
@@ -69,13 +69,15 @@ class ReservationsScreen extends Component{
     },
     reservationBox:{
         width:'100%',
+        padding:10,
+        borderColor:'rgba(100,100,100,0.5)',
         borderWidth:1,
-        borderColor:'red',
-        padding:3,
+        backgroundColor:'#c0ffee',
+        borderRadius:10,
+        marginBottom:20,
     },
     reservationDetail:{
         height:70,
-        borderWidth:1,
         flexDirection: 'row',
         justifyContent: 'space-between',
     },
