@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Component} from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import {
@@ -8,17 +8,52 @@ import {
   View,
   Text,
   StatusBar,
-  Button,
+  Image
 } from 'react-native';
 import { TextInput, TouchableOpacity } from 'react-native-gesture-handler';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { IconButton,Button } from 'react-native-paper';
 
-const ReservationsScreen = ({navigation}) => {
-  return (
-    <View style={styles.container}>
-        <Text> BEN ReservationsScreen HOŞGELDİN GARDAŞ</Text>
-    </View>
-  );
-  };
+
+class ReservationsScreen extends Component{
+
+    render(){
+        return (
+        <View style={styles.container}>
+            <View style={styles.content}>
+                <View style={styles.reservationBox}>
+                    <View style={styles.reservationDetail}>
+                        <View style={styles.reservationInfo}>
+                        <Text>Mükemmel Otopark</Text>
+                        <Text>Beşiktaş</Text>
+                        </View>
+
+                        <View style={styles.reservationPrice}>
+                            <Text>25 ₺</Text>
+                        </View>
+
+                        <View style={styles.reservationPhoto}>
+                            <Image source={require('../assests/park.png')} style={styles.reservationPhotoIMG}/>
+                        </View>
+                    </View>
+
+
+                    <View style={styles.reservationRate}>
+                    <Button icon="star" mode="contained" color='#FF6633' labelStyle={styles.buttonRateText} style={styles.buttonRate} >
+                    Puan Ver
+                    </Button>    
+                    </View>
+                </View>
+
+
+            </View>
+        </View>
+        )}
+
+
+}
+
+
 
   export default ReservationsScreen;
 
@@ -27,84 +62,45 @@ const ReservationsScreen = ({navigation}) => {
       flex: 1, 
       backgroundColor: '#FFF'
     },
-    header: {
-        flex: 1,
-        justifyContent: 'flex-end',
-        paddingHorizontal: 20,
-        paddingBottom: 50
+    content:{
+        paddingTop:15,
+        paddingLeft:10,
+        paddingRight:10,
     },
-    footer: {
-        flex: 3,
-        backgroundColor: '#fff',
-        borderTopRightRadius: 50,
-        paddingHorizontal: 20,
-        paddingVertical: 30,
-        width:'90%',
-    },
-    text_header: {
-        color: '#fff',
-        fontWeight: 'bold',
-        fontSize: 30
-    },
-    text_footer: {
-        color: '#05375a',
-        fontSize: 18
-    },
-    action: {
-        flexDirection: 'row',
-        marginTop: 10,
-        borderBottomWidth: 2,
-        borderBottomColor: '#A9A9A9',
-        paddingBottom: 5,
-    },
-    actionError: {
-        flexDirection: 'row',
-        marginTop: 10,
-        borderBottomWidth: 1,
-        borderBottomColor: '#FF0000',
-        paddingBottom: 5
-    },
-    textInput: {
-        flex: 1,
-        marginTop: Platform.OS === 'ios' ? 0 : -12,
-        paddingLeft: 5,
-        color: '#05375a',
-        paddingBottom:-5,
-    },
-    errorMsg: {
-        color: '#FF0000',
-        fontSize: 14,
-    },
-    button: {
-        alignItems: 'center',
-        marginTop: 50,
+    reservationBox:{
         width:'100%',
+        borderWidth:1,
+        borderColor:'red',
+        padding:3,
     },
-    signIn: {
-        width: '100%',
-        height: 50,
+    reservationDetail:{
+        height:70,
+        borderWidth:1,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+    },
+    reservationInfo:{
         justifyContent: 'center',
-        alignItems: 'center',
-        borderRadius: 10
+        marginLeft:20,
     },
-    textSign: {
-        fontSize: 18,
-        fontWeight: 'bold'
+    reservationPrice:{
+        justifyContent: 'center',
     },
-    touchableButton:{
-        marginTop:20,
-        width:300,
-        paddingTop:8,
-        paddingBottom:8,
-        borderWidth: 1,
-        borderColor:'#BABABA',
-        borderRadius:8,
-        alignItems:"center",
-        backgroundColor:'#9999ff',
+    reservationPhoto:{
+        justifyContent: 'center',
+
     },
-    touchableButtonText: {
+    reservationPhotoIMG:{
+        width: 50,
+        height: 50,
+        resizeMode: 'stretch',
+        marginRight:20,
+    },
+    buttonRateText:{
         color:'#fff',
-        fontSize:20,
-        fontWeight:"bold",
+        fontSize:18,
+    },
+    buttonRate:{
+
     }
   });
