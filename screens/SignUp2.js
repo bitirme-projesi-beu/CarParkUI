@@ -14,7 +14,7 @@ import {
 import { TextInput, TouchableOpacity } from 'react-native-gesture-handler';
 import * as Animatable from 'react-native-animatable';
 import {AuthContext} from '../components/context';
-
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const SingUpScreen = ({navigation}) => {
     const {signUp} = React.useContext(AuthContext);
@@ -31,33 +31,33 @@ const SingUpScreen = ({navigation}) => {
         
         <Animatable.View style={styles.footer} animation="fadeInUpBig">
             <ScrollView style={styles.scrollViewStyle}>
-        <Text style={[styles.text_footer, {marginTop:10}]}>Ad</Text>
             <View style={styles.action}>
-                <TextInput 
+            <Icon name="account-circle" size={30} color="#2E304F" />
+            <TextInput 
                 style={styles.textInput} 
                 placeholder="Ad"
                 autoCapitalize="none"
                 />
             </View>
-            <Text style={[styles.text_footer, {marginTop:10}]}>Soyad</Text>
             <View style={styles.action}>
+            <Icon name="account-circle" size={30} color="#2E304F" />
                 <TextInput 
                 style={styles.textInput} 
                 placeholder="Soyad"
                 autoCapitalize="none"
                 />
             </View>
-            <Text style={[styles.text_footer, {marginTop:10}]}>E-Mail</Text>
             <View style={styles.action}>
+            <Icon name="email" size={30} color="#2E304F" />
                 <TextInput 
                 style={styles.textInput} 
                 placeholder="E-Mail"
                 autoCapitalize="none"
                 />
             </View>
-            <Text style={[styles.text_footer, {marginTop:10}]}>Şifre</Text>
             <View style={styles.action}>
-                <TextInput 
+            <Icon name="key-variant" size={30} color="#2E304F" />
+            <TextInput 
                 style={styles.textInput} 
                 secureTextEntry
                 placeholder="Şifre"
@@ -117,7 +117,7 @@ const SingUpScreen = ({navigation}) => {
     },
     action: {
         flexDirection: 'row',
-        marginTop: 5,
+        marginTop: 25,
         borderBottomWidth: 2,
         borderBottomColor: '#A9A9A9',
         paddingBottom: 5,

@@ -7,7 +7,7 @@
  */
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { createDrawerNavigator } from '@react-navigation/drawer';
+
 import React, { useState, useEffect } from 'react';
 import {
   SafeAreaView,
@@ -26,16 +26,11 @@ import {
   DebugInstructions,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
-
+import Icon from 'react-native-vector-icons/Ionicons';
 import RootStackScreen from '../CarParkUI/screens/RootStackScreen';
-
-import HomeScreen from '../CarParkUI/screens/Home';
-import ProfileScreen from '../CarParkUI/screens/Profile';
-import ReservationsScreen from '../CarParkUI/screens/Reservations';
 import { AuthContext } from '../CarParkUI/components/context'
+import HomeTabScreen from '../CarParkUI/screens/HomeTabScreen';
 
-const Drawer = createDrawerNavigator();
-const Stack = createStackNavigator();
 const App = () => {
   const [isLoading,setIsLoading] = React.useState(true);
   const [userToken,setUserToken] = React.useState(null);
@@ -58,7 +53,7 @@ const App = () => {
   useEffect(() => {
     setTimeout(() => {
       setIsLoading(false);
-    },1000);
+    },200);
   }, []);
 
   if(isLoading){
@@ -73,12 +68,9 @@ const App = () => {
     <AuthContext.Provider value={authContext}>
     <NavigationContainer>
       {userToken === null ? (
-      <RootStackScreen/>) :
-     <Drawer.Navigator initialRouteName="Home">
-        <Drawer.Screen name="Home" component={HomeScreen} />
-        <Drawer.Screen name="Profile" component={ProfileScreen} />
-        <Drawer.Screen name="Reservations" component={ReservationsScreen} />
-      </Drawer.Navigator> }
+      <RootStackScreen/>) :        <HomeTabScreen/> 
+  }
+    
     </NavigationContainer>
     </AuthContext.Provider>
   );
