@@ -33,7 +33,7 @@ return (<Tab.Navigator
       component={HomeScreen}
       options={{
         tabBarLabel: 'Harita',
-        tabBarColor:'#2E304F',
+        tabBarColor:'#00007f',
         tabBarIcon: ({ color }) => (
           <Icon name="md-pin" color={color} size={26} />
         ),
@@ -44,7 +44,7 @@ return (<Tab.Navigator
       component={ReservationsScreen}
       options={{
         tabBarLabel: 'Rezervasyonlarım',
-        tabBarColor:'#4d4c7d',
+        tabBarColor:'#330033',
         tabBarIcon: ({ color }) => (
           <Icon name="md-list" color={color} size={26} />
         ),
