@@ -72,7 +72,6 @@ class HomeScreen extends Component{
                 latitudeDelta: 0.018,
                 longitudeDelta: 0.019,
             }
-
         })
     }
 
