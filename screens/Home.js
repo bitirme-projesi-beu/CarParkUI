@@ -1,18 +1,14 @@
 import React, { Component, useState } from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
 import {
-  SafeAreaView,
   StyleSheet,
-  ScrollView,
   View,
   Text,
-  StatusBar,
+  Modal,
   Platform,
-  Dimensions
+  Dimensions,
+  TouchableOpacity
 } from 'react-native';
 import { IconButton,Button } from 'react-native-paper';
-import { TextInput, TouchableOpacity, State, PinchGestureHandler } from 'react-native-gesture-handler';
 import MapView, { 
 PROVIDER_GOOGLE, 
 Marker, 
@@ -31,17 +27,19 @@ class HomeScreen extends Component{
         clickToShowCarousel :"none",
         kordinatlar : [
             { id:'1', name : 'Güzel Yer',rate:2.3,maxCapacity:30,activeCapacity:5,price:10 ,latitude : 41.130951, longitude : 28.997386},
-            { id:'2', name : 'Leş Yer', rate:3.3,maxCapacity:18,activeCapacity:16, price:10,latitude : 41.117155, longitude : 29.004221},
-            { id:'3', name : 'Mükemmel Yer', rate:1.3,maxCapacity:25,activeCapacity:13 ,price:10,latitude : 41.118957, longitude : 28.983095},
-            { id:'4', name : 'Hoş Yer', rate:5,maxCapacity:10,activeCapacity:8,price:10 ,latitude : 41.124841, longitude : 29.013136},
+            { id:'2', name : 'Hoş Yer', rate:5,maxCapacity:10,activeCapacity:8,price:10 ,latitude : 41.124841, longitude : 29.013136},
+            { id:'3', name : 'Leş Yer', rate:3.3,maxCapacity:18,activeCapacity:16, price:10,latitude : 41.117155, longitude : 29.004221},
+            { id:'4', name : 'Mükemmel Yer', rate:1.3,maxCapacity:25,activeCapacity:13 ,price:10,latitude : 41.118957, longitude : 28.983095},
         ],
         region :{
             latitude : 41.130951, 
             longitude : 28.997386,
             latitudeDelta: 0.018,
             longitudeDelta: 0.019,
+        },
+        modalVisible : false,
+        modalData: { id:'0', name : '0', rate:0,maxCapacity:0,activeCapacity:0,price:0 ,latitude :0, longitude : 0}
         }
-    }
 
     componentDidMount(){
         this.requestLocationPermission();
@@ -56,7 +54,7 @@ class HomeScreen extends Component{
             }
         }else{
             var response = await request(PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION);
-            console.log('RESPONSE',response);
+            // console.log('RESPONSE',response);
 
             if(response ==='granted'){
                 this.locateCurrentPosition();
@@ -75,6 +73,21 @@ class HomeScreen extends Component{
         })
     }
 
+    reserveClick =(data) => {
+        this.setState({
+            ...this.state,
+            modalVisible:true,
+            modalData:data
+          });
+    }
+
+    closeModal = () => {
+        this.setState({
+            ...this.state,
+            modalVisible:false,
+
+          });
+    }
     OnMarkerPressed =(location,index=0) => {
         this._map.animateToRegion({
             latitude:location.latitude,
@@ -83,7 +96,6 @@ class HomeScreen extends Component{
             longitudeDelta: 0.011,
         });
         this._carousel.snapToItem(index);
-        console.log(index);
         this.setState({
             ...this.state,
             clickToShowCarousel: "flex"
@@ -98,7 +110,7 @@ class HomeScreen extends Component{
     renderCarouselItem = ({item}) => 
     <View style={this.carouselCard()}>
         <View style={styles.carouselRowHeader}>
-            <Text style={styles.carouselHeaderText}>Otopark Bilgileri</Text>
+            <Text style={styles.carouselHeaderText}>{item.name}</Text>
             <View style={styles.carouselDottedLine}></View>
         </View>
 
@@ -129,7 +141,13 @@ class HomeScreen extends Component{
 
         <View style={styles.carouselRowButton}>
             <View style={styles.carouselRowElement}>
-                <Button icon="alpha-p-box-outline" mode="contained" color='#FF6633' labelStyle={styles.buttonReserveText} style={styles.buttonReserve} >
+                <Button icon="alpha-p-box-outline" 
+                mode="contained" 
+                color='#FF6633' 
+                labelStyle={styles.buttonReserveText} 
+                style={styles.buttonReserve} 
+                onPress={() => this.reserveClick(item)}
+                >
                 Rezerve Et
                 </Button>                
              </View>
@@ -162,6 +180,46 @@ class HomeScreen extends Component{
     render(){
                 return (
         <View style={styles.container}>
+    <Modal
+    animationType="slide"
+    transparent={true}
+    visible={this.state.modalVisible}
+    onRequestClose ={() => this.closeModal()}
+
+    >
+        <View style={styles.modalView}>
+            <View style={styles.modalContent}>
+                <View style={styles.closeModalView}>
+                    <View>
+                    <Icon name="close" size={30} color="#2E304F"  onPress ={() => this.closeModal()}/>
+                    </View>
+                </View>
+
+                <View style={styles.modalInfoView}>
+                    <Text style={styles.modalInfoNameText}>
+                        " {this.state.modalData.name} " adlı otoparkı dakikası (İlk 5 dakikası ücretsiz) 
+                        0.25 ₺ karşılığı rezerve etmek üzeresiniz.
+                    </Text>
+                </View>
+                
+                <View style={styles.modalReserveView}>
+                <Button
+                mode="contained" 
+                color='#FF6633' 
+                labelStyle={styles.buttonReserveText} 
+                style={styles.buttonModalReserve} 
+                onPress={() => {}}
+                >
+                Kabul Et
+                </Button>       
+                </View>
+            </View>
+      </View>
+    </Modal>
+
+
+
+
      <MapView
      provider={PROVIDER_GOOGLE} 
      showsUserLocation={true}
@@ -278,4 +336,39 @@ class HomeScreen extends Component{
       fontWeight:"normal",
       color:'#fff'
     },
+    modalView:{
+        flex: 2,
+        justifyContent: "center",
+        alignItems: "center",
+    },
+    modalContent:{
+        width:320,
+        borderRadius:20,
+        backgroundColor:'#fff',
+        paddingLeft:10,
+        paddingRight:10,
+        paddingTop:5,
+    },
+    modalInfoView:{
+        paddingLeft:15,
+        paddingRight:15,
+        marginTop:5,
+    },
+    modalInfoNameText:{
+        fontSize:20,
+    },
+    modalReserveView:{
+        marginTop:20,
+        paddingBottom:20,
+    },
+    closeModalView:{
+        flexDirection: 'row',
+        justifyContent: 'flex-end',
+        alignItems: 'center',
+    },
+    buttonModalReserve:{
+        paddingLeft:5,
+        paddingRight:5,
+        borderWidth:1
+    }
   });

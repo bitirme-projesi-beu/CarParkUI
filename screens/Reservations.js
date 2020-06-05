@@ -19,6 +19,7 @@ import { Rating, AirbnbRating } from 'react-native-elements';
 
 class ReservationsScreen extends Component{
 
+
     state={
         reservations : [
             {

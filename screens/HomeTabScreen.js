@@ -43,7 +43,7 @@ return (<Tab.Navigator
       name="Reservations"
       component={ReservationsScreen}
       options={{
-        tabBarLabel: 'Rezervasyonlarım',
+        tabBarLabel: 'Geçmişim',
         tabBarColor:'#330033',
         tabBarIcon: ({ color }) => (
           <Icon name="md-list" color={color} size={26} />
