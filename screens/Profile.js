@@ -13,6 +13,8 @@ import {
 import { TextInput, TouchableOpacity } from 'react-native-gesture-handler';
 import {AuthContext} from '../components/context'
 import { IconButton,Button } from 'react-native-paper';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+
 const ProfileScreen = ({navigation}) => {
 
 
@@ -21,12 +23,13 @@ const ProfileScreen = ({navigation}) => {
   return (
     <View style={styles.container}>
                 <StatusBar 
-            backgroundColor= '#2E304F'
+            backgroundColor= '#827397'
             barStyle='light-content'
         />
-        <Text style={{fontSize:50}}> BEN </Text>
-        <Text style={{fontSize:50, color:'#FF6633'}}> PROFİL</Text>
-        <Text style={{fontSize:50}}> EKRANIYIM</Text>
+        <View style={styles.avatar}>
+        <Icon name="account-circle" size={100} color="#2E304F" />
+        </View>
+        <Text style={styles.nameSurname}> Ahmet Köse </Text>
         <View style={styles.butonExitView}>
         <Button icon="door" mode="outlined" color='#FF6633' labelStyle={styles.butonExitText} style={styles.butonExit} onPress={() =>{signOut()}} >
         Çıkış Yap
@@ -42,7 +45,7 @@ const ProfileScreen = ({navigation}) => {
     container: {
       flex: 1, 
       backgroundColor: '#fff',
-      
+      paddingTop:30,
     },
     touchableExitButton:{
         marginTop:10,
@@ -75,5 +78,14 @@ const ProfileScreen = ({navigation}) => {
     butonExitText:{
       fontSize:20,
       fontWeight:"bold",
+    },
+    avatar:{
+      alignItems:"center",
+
+    },
+    nameSurname:{
+      marginTop:10,
+      textAlign:"center",
+      fontSize:30,
     }
   });
