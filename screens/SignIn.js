@@ -16,10 +16,32 @@ import * as Animatable from 'react-native-animatable';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const SignInScreen = ({navigation}) => {
-
-
     const {signIn} = React.useContext(AuthContext);
 
+    const [data, setData] = React.useState({
+        email: '',
+        password: '',
+      });
+    
+    const EmailChangeFunc = (val) => {
+                setData({
+                    ...data,
+                    email: val,
+                });
+      }
+    
+    const PasswordChangeFunc = (val) => {
+        setData({
+            ...data,
+            password: val,
+        });
+    }
+
+    const LoginFunc = () => {
+        signIn(data);
+    }
+    
+    
   return (
     <View style={styles.container}>
         <StatusBar 
@@ -36,6 +58,7 @@ const SignInScreen = ({navigation}) => {
                 style={styles.textInput} 
                 placeholder="E-Mail"
                 autoCapitalize="none"
+                onChangeText={(val) => EmailChangeFunc(val)}
                 />
             </View>
 
@@ -46,12 +69,14 @@ const SignInScreen = ({navigation}) => {
                 secureTextEntry
                 placeholder="Şifre"
                 autoCapitalize="none"
+                onChangeText={(val) => PasswordChangeFunc(val)}
+
                 />
             </View>
             <View style={styles.button}>
             <TouchableOpacity
             style= {styles.touchableButton}
-            onPress={() => {signIn()}}>
+            onPress={() => LoginFunc()}>
             <Text style= {styles.touchableButtonSignIn}>Giriş Yap</Text>
             </TouchableOpacity>
             <TouchableOpacity

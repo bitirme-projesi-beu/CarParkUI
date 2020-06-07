@@ -30,14 +30,24 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import RootStackScreen from '../CarParkUI/screens/RootStackScreen';
 import { AuthContext } from '../CarParkUI/components/context'
 import HomeTabScreen from '../CarParkUI/screens/HomeTabScreen';
+import { color } from 'react-native-reanimated';
+import * as Http from '../CarParkUI/utils/HttpHelper';
 
 const App = () => {
   const [isLoading,setIsLoading] = React.useState(true);
   const [userToken,setUserToken] = React.useState(null);
 
   const authContext = React.useMemo(() =>({
-    signIn:() => {
-      setUserToken('selam');
+    signIn: async (data) => {
+      console.log("signIn Method RUNNING");      
+      Http.Login(data).then(res =>{
+        if(res.status===200){
+        return res.data;}
+      })
+      .then(data=> {
+        setUserToken(data);
+      })
+      .catch(err => alert("hatalı giriş"))
       setIsLoading(false);
     },
     signOut:() => {
@@ -68,9 +78,9 @@ const App = () => {
     <AuthContext.Provider value={authContext}>
     <NavigationContainer>
       {userToken === null ? (
-      <RootStackScreen/>) :        <HomeTabScreen/> 
+      <RootStackScreen/>) :    
+      <HomeTabScreen/> 
   }
-    
     </NavigationContainer>
     </AuthContext.Provider>
   );
