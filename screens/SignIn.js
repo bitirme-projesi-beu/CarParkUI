@@ -21,24 +21,60 @@ const SignInScreen = ({navigation}) => {
     const [data, setData] = React.useState({
         email: '',
         password: '',
-      });
+        emailCheck: false,
+        passwordCheck:true,
+        showEmailAlert:false,
+    });
     
     const EmailChangeFunc = (val) => {
-                setData({
-                    ...data,
-                    email: val,
-                });
+        if( val.trim().length >= 4 ) {
+            setData({
+                ...data,
+                email: val,
+                emailCheck: true
+            });
+        } else {
+            setData({
+                ...data,
+                email: val,
+                emailCheck: false
+            });
+        }
       }
     
     const PasswordChangeFunc = (val) => {
-        setData({
-            ...data,
-            password: val,
-        });
+        if( val.trim().length >= 8 ) {
+            setData({
+                ...data,
+                password: val,
+                passwordCheck: true
+            });
+        } else {
+            setData({
+                ...data,
+                password: val,
+                passwordCheck: false
+            });
+        }
     }
 
     const LoginFunc = () => {
-        signIn(data);
+        if(data.emailCheck===false){
+            setData({
+                ...data,
+                showEmailAlert: true,
+            }); 
+        }
+        else
+        {
+            setData({
+                ...data,
+                showEmailAlert: false,
+            }); 
+        }
+        if(data.passwordCheck===true && data.emailCheck===true){
+            signIn(data);
+        }
     }
     
     
@@ -61,7 +97,13 @@ const SignInScreen = ({navigation}) => {
                 onChangeText={(val) => EmailChangeFunc(val)}
                 />
             </View>
-
+            {data.showEmailAlert === true ?(
+            <View>
+                <Text>
+                    Lütfen Geçerli bir E-Mail Adresi Giriniz.
+                </Text>
+            </View>):
+            null}
             <View style={[styles.action, {marginTop:30}]}>
             <Icon name="key-variant" size={30} color="#2E304F" />
                 <TextInput 
@@ -73,6 +115,13 @@ const SignInScreen = ({navigation}) => {
 
                 />
             </View>
+            {data.passwordCheck === false ?(
+            <View>
+                <Text>
+                    Lütfen geçerli bir şifre giriniz.
+                </Text>
+            </View>):
+            null}
             <View style={styles.button}>
             <TouchableOpacity
             style= {styles.touchableButton}

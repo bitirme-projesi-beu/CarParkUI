@@ -25,72 +25,115 @@ const SingUpScreen = ({navigation}) => {
         surname: '',
         email: '',
         password: '',
-        createdAt:'2020-06-07T20:58:45.877',
+        createdAt:"2020-06-07T20:58:45.877",
+        checkName: 'true',
+        checkSurname: 'true',
+        checkEmail: 'true',
+        checkPassword: 'true',
+        permissionSignUp:'false'
       });
-    
+
       const [loginData, setLoginData] = React.useState({
         email: '',
         password: '',
       });  
     const NameChangeFunc = (val) => {
-        setData({
-            ...data,
-            name: val,
-        });
+        if( val.trim().length > 0 ) {
+            setData({
+                ...data,
+                name: val,
+                checkName:true
+            });
+        }else {
+            setData({
+                ...data,
+                name: val,
+                checkName:false
+            });
+        }
     }
 
     const SurnameChangeFunc = (val) => {
-        setData({
-            ...data,
-            surname: val,
-        });
+        if( val.trim().length > 0 ) {
+            setData({
+                ...data,
+                surname: val,
+                checkSurname:true
+            });
+        }else {
+            setData({
+                ...data,
+                surname: val,
+                checkSurname:false
+            });
+        }
     }
 
     const EmailChangeFunc = (val) => {
-        setData({
-            ...data,
-            email: val,
-        }),
-        setLoginData({
-            ...data,
-            email: val,
-        });
-      }
+        if( val.trim().length >= 4 ) {
+            setData({
+                ...data,
+                email: val,
+                checkEmail:true
+            }),        
+            setLoginData({
+                ...data,
+                email: val,
+            });
+        }else {
+            setData({
+                ...data,
+                email: val,
+                checkEmail:false
+            }),
+            setLoginData({
+                ...data,
+                email: val,
+            });
+        }
+    }
     
     const PasswordChangeFunc = (val) => {
-        setData({
-            ...data,
-            password: val,
-        }),
-        setLoginData({
-            ...data,
-            password: val,
-        });
-    }
-
-    const dateTimeUpdate = () =>{
-        var date = new Date().getDate(); //Current Date
-        var month = new Date().getMonth() + 1; //Current Month
-        var year = new Date().getFullYear(); //Current Year
-        var hours = new Date().getHours(); //Current Hours
-        var min = new Date().getMinutes(); //Current Minutes
-        var sec = new Date().getSeconds(); //Current Seconds
-
-        var now =year + "-" + month + "-" + date + "T" + hours + ":" + min + "." + sec;
-        setData({
-            ...data,
-            createdAt:now,
-        });
-
-    }
-    async function SignUpFunc()  {
-        var result = await signUp(data);
-        console.log("bekledik", result);
-        if(result === 201){
-            console.log("SignIn çağırılmadan önce login data =>",loginData),
-            signIn(loginData);
+        if( val.trim().length >= 8 ) {
+            setData({
+                ...data,
+                password: val,
+                checkPassword:true
+            }),        
+            setLoginData({
+                ...data,
+                password: val,
+            });
+        }else {
+            setData({
+                ...data,
+                password: val,
+                checkPassword:false
+            }),
+            setLoginData({
+                ...data,
+                password: val,
+            });
         }
+        
+    }
 
+    async function SignUpFunc()  {
+        
+        if(data.checkEmail===true && 
+           data.checkName ===true && 
+           data.checkPassword ===true && 
+           data.checkSurname ===true)
+        {
+            var result = await signUp(data);
+            console.log("bekledik", result);
+            if(result === 201){
+                signIn(loginData);
+            }
+        }
+        else {
+            alert("Formu gözden geçir");
+        }   
     }
 
 
@@ -118,6 +161,13 @@ const SingUpScreen = ({navigation}) => {
 
                 />
             </View>
+            {data.checkName === false ?(
+            <View>
+                <Text>
+                    İsim boş bırakılamaz.
+                </Text>
+            </View>):
+            null}
             <View style={styles.action}>
             <Icon name="account-circle" size={30} color="#2E304F" />
                 <TextInput 
@@ -128,6 +178,13 @@ const SingUpScreen = ({navigation}) => {
 
                 />
             </View>
+            {data.checkSurname === false ?(
+            <View>
+                <Text>
+                    Soyisim boş bırakılamaz.
+                </Text>
+            </View>):
+            null}
             <View style={styles.action}>
             <Icon name="email" size={30} color="#2E304F" />
                 <TextInput 
@@ -137,6 +194,13 @@ const SingUpScreen = ({navigation}) => {
                 onChangeText={(val) => EmailChangeFunc(val)}
                 />
             </View>
+            {data.checkEmail === false ?(
+            <View>
+                <Text>
+                    Lütfen geçerli bir E-Mail giriniz.
+                </Text>
+            </View>):
+            null}
             <View style={styles.action}>
             <Icon name="key-variant" size={30} color="#2E304F" />
             <TextInput 
@@ -147,6 +211,13 @@ const SingUpScreen = ({navigation}) => {
                 onChangeText={(val) => PasswordChangeFunc(val)}
                 />
             </View>
+            {data.checkPassword === false ?(
+            <View>
+                <Text>
+                En az 8 karakter girilebilir.
+                </Text>
+            </View>):
+            null}
             <View style={styles.button}>
             <TouchableOpacity
             style= {styles.touchableButtonSignUp}
