@@ -18,6 +18,84 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const SingUpScreen = ({navigation}) => {
     const {signUp} = React.useContext(AuthContext);
+    const {signIn} = React.useContext(AuthContext);
+
+    const [data, setData] = React.useState({
+        name: '',
+        surname: '',
+        email: '',
+        password: '',
+        createdAt:'2020-06-07T20:58:45.877',
+      });
+    
+      const [loginData, setLoginData] = React.useState({
+        email: '',
+        password: '',
+      });  
+    const NameChangeFunc = (val) => {
+        setData({
+            ...data,
+            name: val,
+        });
+    }
+
+    const SurnameChangeFunc = (val) => {
+        setData({
+            ...data,
+            surname: val,
+        });
+    }
+
+    const EmailChangeFunc = (val) => {
+        setData({
+            ...data,
+            email: val,
+        }),
+        setLoginData({
+            ...data,
+            email: val,
+        });
+      }
+    
+    const PasswordChangeFunc = (val) => {
+        setData({
+            ...data,
+            password: val,
+        }),
+        setLoginData({
+            ...data,
+            password: val,
+        });
+    }
+
+    const dateTimeUpdate = () =>{
+        var date = new Date().getDate(); //Current Date
+        var month = new Date().getMonth() + 1; //Current Month
+        var year = new Date().getFullYear(); //Current Year
+        var hours = new Date().getHours(); //Current Hours
+        var min = new Date().getMinutes(); //Current Minutes
+        var sec = new Date().getSeconds(); //Current Seconds
+
+        var now =year + "-" + month + "-" + date + "T" + hours + ":" + min + "." + sec;
+        setData({
+            ...data,
+            createdAt:now,
+        });
+
+    }
+    async function SignUpFunc()  {
+        var result = await signUp(data);
+        console.log("bekledik", result);
+        if(result === 201){
+            console.log("SignIn çağırılmadan önce login data =>",loginData),
+            signIn(loginData);
+        }
+
+    }
+
+
+
+
 
   return (
     <View style={styles.container}>
@@ -28,7 +106,6 @@ const SingUpScreen = ({navigation}) => {
         <View style={styles.header}>
         <Animatable.Text style={styles.text_header} animation="lightSpeedIn">Aracına yer ararken artık vakit kaybetmeyeceksin</Animatable.Text>
         </View>
-        
         <Animatable.View style={styles.footer} animation="fadeInUpBig">
             <ScrollView style={styles.scrollViewStyle}>
             <View style={styles.action}>
@@ -37,6 +114,8 @@ const SingUpScreen = ({navigation}) => {
                 style={styles.textInput} 
                 placeholder="Ad"
                 autoCapitalize="none"
+                onChangeText={(val) => NameChangeFunc(val)}
+
                 />
             </View>
             <View style={styles.action}>
@@ -45,6 +124,8 @@ const SingUpScreen = ({navigation}) => {
                 style={styles.textInput} 
                 placeholder="Soyad"
                 autoCapitalize="none"
+                onChangeText={(val) => SurnameChangeFunc(val)}
+
                 />
             </View>
             <View style={styles.action}>
@@ -53,6 +134,7 @@ const SingUpScreen = ({navigation}) => {
                 style={styles.textInput} 
                 placeholder="E-Mail"
                 autoCapitalize="none"
+                onChangeText={(val) => EmailChangeFunc(val)}
                 />
             </View>
             <View style={styles.action}>
@@ -62,12 +144,13 @@ const SingUpScreen = ({navigation}) => {
                 secureTextEntry
                 placeholder="Şifre"
                 autoCapitalize="none"
+                onChangeText={(val) => PasswordChangeFunc(val)}
                 />
             </View>
             <View style={styles.button}>
             <TouchableOpacity
             style= {styles.touchableButtonSignUp}
-            onPress={() => {signUp()}}
+            onPress={() => SignUpFunc()}
             >
                 <Text style= {styles.touchableButtonSignUpText}>Üye Ol</Text>
             </TouchableOpacity>

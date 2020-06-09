@@ -6,22 +6,16 @@ const url = (endpoint) =>{
 }
 
 const Login = (data) => {
-
-    // var tryData ={
-    //     password: "test",
-    //     email: "test"
-    //     };
     var apiURL = url("/users/authenticate")
-    console.log("POST DATA => ", data);
-    console.log("POST URL  => ", apiURL);
     return axios.post(apiURL,data).then(res =>res)
-    .catch(err =>       console.log("***************************************") );
-
-
-// AUTHENTICE Kapısını kullan
+    .catch(err =>console.log("Hata Alındı =>", err));
 }
 
-
+const Register = (data) => {
+    var apiURL = url("/users/driver-sign-up")
+    return axios.post(apiURL,data).then(res =>res.status)
+    .catch(err =>console.log("Hata Alındı =>", err));
+}
 export {
-    Login
+    Login,Register
 }

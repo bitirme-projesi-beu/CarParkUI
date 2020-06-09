@@ -39,7 +39,7 @@ const App = () => {
 
   const authContext = React.useMemo(() =>({
     signIn: async (data) => {
-      console.log("signIn Method RUNNING");      
+      console.log("signIn Method RUNNING", data);      
       Http.Login(data).then(res =>{
         if(res.status===200){
         return res.data;}
@@ -47,16 +47,24 @@ const App = () => {
       .then(data=> {
         setUserToken(data);
       })
-      .catch(err => alert("hatalı giriş"))
+      .catch(err => alert("Yanlış Giriş bilgileri", err))
       setIsLoading(false);
     },
     signOut:() => {
       setUserToken(null);
       setIsLoading(false);
     },
-    signUp:() => {
-      setUserToken('selam');
-      setIsLoading(false);
+    signUp:async (data) => {
+      console.log("signUp Method RUNNING");      
+      return Http.Register(data).then(res =>{
+        if(res===201){
+        }
+        else {
+          alert("hatalı bilgi girişi")
+        }
+        return res;      
+      })
+      .catch(err =>alert("Böyle bir üyelik var"))
     },
   }));
 
