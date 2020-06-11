@@ -16,10 +16,68 @@ import * as Animatable from 'react-native-animatable';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const SignInScreen = ({navigation}) => {
-
-
     const {signIn} = React.useContext(AuthContext);
 
+    const [data, setData] = React.useState({
+        email: '',
+        password: '',
+        emailCheck: false,
+        passwordCheck:true,
+        showEmailAlert:false,
+    });
+    
+    const EmailChangeFunc = (val) => {
+        if( val.trim().length >= 4 ) {
+            setData({
+                ...data,
+                email: val,
+                emailCheck: true
+            });
+        } else {
+            setData({
+                ...data,
+                email: val,
+                emailCheck: false
+            });
+        }
+      }
+    
+    const PasswordChangeFunc = (val) => {
+        if( val.trim().length >= 8 ) {
+            setData({
+                ...data,
+                password: val,
+                passwordCheck: true
+            });
+        } else {
+            setData({
+                ...data,
+                password: val,
+                passwordCheck: false
+            });
+        }
+    }
+
+    const LoginFunc = () => {
+        if(data.emailCheck===false){
+            setData({
+                ...data,
+                showEmailAlert: true,
+            }); 
+        }
+        else
+        {
+            setData({
+                ...data,
+                showEmailAlert: false,
+            }); 
+        }
+        if(data.passwordCheck===true && data.emailCheck===true){
+            signIn(data);
+        }
+    }
+    
+    
   return (
     <View style={styles.container}>
         <StatusBar 
@@ -28,17 +86,25 @@ const SignInScreen = ({navigation}) => {
         />
         <View style={styles.header}> 
             <Animatable.Text style={styles.text_header} animation="lightSpeedIn">Giriş yap ve müsait otoparkları keşfet.</Animatable.Text>
-        </View>
+        </View> 
         <Animatable.View style={styles.footer} animation="fadeInUpBig">
+        <ScrollView>
             <View style={styles.action}>
             <Icon name="email" size={30} color="#2E304F" />
                 <TextInput 
                 style={styles.textInput} 
                 placeholder="E-Mail"
                 autoCapitalize="none"
+                onChangeText={(val) => EmailChangeFunc(val)}
                 />
             </View>
-
+            {data.showEmailAlert === true ?(
+            <View>
+                <Text>
+                    Lütfen Geçerli bir E-Mail Adresi Giriniz.
+                </Text>
+            </View>):
+            null}
             <View style={[styles.action, {marginTop:30}]}>
             <Icon name="key-variant" size={30} color="#2E304F" />
                 <TextInput 
@@ -46,12 +112,21 @@ const SignInScreen = ({navigation}) => {
                 secureTextEntry
                 placeholder="Şifre"
                 autoCapitalize="none"
+                onChangeText={(val) => PasswordChangeFunc(val)}
+
                 />
             </View>
+            {data.passwordCheck === false ?(
+            <View>
+                <Text>
+                    Lütfen geçerli bir şifre giriniz.
+                </Text>
+            </View>):
+            null}
             <View style={styles.button}>
             <TouchableOpacity
             style= {styles.touchableButton}
-            onPress={() => {signIn()}}>
+            onPress={() => LoginFunc()}>
             <Text style= {styles.touchableButtonSignIn}>Giriş Yap</Text>
             </TouchableOpacity>
             <TouchableOpacity
@@ -62,7 +137,7 @@ const SignInScreen = ({navigation}) => {
             </TouchableOpacity>
             </View>
 
-
+            </ScrollView>
         </Animatable.View> 
     </View>
   );

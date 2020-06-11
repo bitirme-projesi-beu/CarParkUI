@@ -18,6 +18,127 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const SingUpScreen = ({navigation}) => {
     const {signUp} = React.useContext(AuthContext);
+    const {signIn} = React.useContext(AuthContext);
+
+    const [data, setData] = React.useState({
+        name: '',
+        surname: '',
+        email: '',
+        password: '',
+        createdAt:"2020-06-07T20:58:45.877",
+        checkName: 'true',
+        checkSurname: 'true',
+        checkEmail: 'true',
+        checkPassword: 'true',
+        permissionSignUp:'false'
+      });
+
+      const [loginData, setLoginData] = React.useState({
+        email: '',
+        password: '',
+      });  
+    const NameChangeFunc = (val) => {
+        if( val.trim().length > 0 ) {
+            setData({
+                ...data,
+                name: val,
+                checkName:true
+            });
+        }else {
+            setData({
+                ...data,
+                name: val,
+                checkName:false
+            });
+        }
+    }
+
+    const SurnameChangeFunc = (val) => {
+        if( val.trim().length > 0 ) {
+            setData({
+                ...data,
+                surname: val,
+                checkSurname:true
+            });
+        }else {
+            setData({
+                ...data,
+                surname: val,
+                checkSurname:false
+            });
+        }
+    }
+
+    const EmailChangeFunc = (val) => {
+        if( val.trim().length >= 4 ) {
+            setData({
+                ...data,
+                email: val,
+                checkEmail:true
+            }),        
+            setLoginData({
+                ...data,
+                email: val,
+            });
+        }else {
+            setData({
+                ...data,
+                email: val,
+                checkEmail:false
+            }),
+            setLoginData({
+                ...data,
+                email: val,
+            });
+        }
+    }
+    
+    const PasswordChangeFunc = (val) => {
+        if( val.trim().length >= 8 ) {
+            setData({
+                ...data,
+                password: val,
+                checkPassword:true
+            }),        
+            setLoginData({
+                ...data,
+                password: val,
+            });
+        }else {
+            setData({
+                ...data,
+                password: val,
+                checkPassword:false
+            }),
+            setLoginData({
+                ...data,
+                password: val,
+            });
+        }
+        
+    }
+
+    async function SignUpFunc()  {
+        
+        if(data.checkEmail===true && 
+           data.checkName ===true && 
+           data.checkPassword ===true && 
+           data.checkSurname ===true)
+        {
+            var result = await signUp(data);
+            console.log("bekledik", result);
+            if(result === 201){
+                signIn(loginData);
+            }
+        }
+        else {
+            alert("Formu gözden geçir");
+        }   
+    }
+
+
+
+
 
   return (
     <View style={styles.container}>
@@ -28,7 +149,6 @@ const SingUpScreen = ({navigation}) => {
         <View style={styles.header}>
         <Animatable.Text style={styles.text_header} animation="lightSpeedIn">Aracına yer ararken artık vakit kaybetmeyeceksin</Animatable.Text>
         </View>
-        
         <Animatable.View style={styles.footer} animation="fadeInUpBig">
             <ScrollView style={styles.scrollViewStyle}>
             <View style={styles.action}>
@@ -37,24 +157,50 @@ const SingUpScreen = ({navigation}) => {
                 style={styles.textInput} 
                 placeholder="Ad"
                 autoCapitalize="none"
+                onChangeText={(val) => NameChangeFunc(val)}
+
                 />
             </View>
+            {data.checkName === false ?(
+            <View>
+                <Text>
+                    İsim boş bırakılamaz.
+                </Text>
+            </View>):
+            null}
             <View style={styles.action}>
             <Icon name="account-circle" size={30} color="#2E304F" />
                 <TextInput 
                 style={styles.textInput} 
                 placeholder="Soyad"
                 autoCapitalize="none"
+                onChangeText={(val) => SurnameChangeFunc(val)}
+
                 />
             </View>
+            {data.checkSurname === false ?(
+            <View>
+                <Text>
+                    Soyisim boş bırakılamaz.
+                </Text>
+            </View>):
+            null}
             <View style={styles.action}>
             <Icon name="email" size={30} color="#2E304F" />
                 <TextInput 
                 style={styles.textInput} 
                 placeholder="E-Mail"
                 autoCapitalize="none"
+                onChangeText={(val) => EmailChangeFunc(val)}
                 />
             </View>
+            {data.checkEmail === false ?(
+            <View>
+                <Text>
+                    Lütfen geçerli bir E-Mail giriniz.
+                </Text>
+            </View>):
+            null}
             <View style={styles.action}>
             <Icon name="key-variant" size={30} color="#2E304F" />
             <TextInput 
@@ -62,12 +208,20 @@ const SingUpScreen = ({navigation}) => {
                 secureTextEntry
                 placeholder="Şifre"
                 autoCapitalize="none"
+                onChangeText={(val) => PasswordChangeFunc(val)}
                 />
             </View>
+            {data.checkPassword === false ?(
+            <View>
+                <Text>
+                En az 8 karakter girilebilir.
+                </Text>
+            </View>):
+            null}
             <View style={styles.button}>
             <TouchableOpacity
             style= {styles.touchableButtonSignUp}
-            onPress={() => {signUp()}}
+            onPress={() => SignUpFunc()}
             >
                 <Text style= {styles.touchableButtonSignUpText}>Üye Ol</Text>
             </TouchableOpacity>

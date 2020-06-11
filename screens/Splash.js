@@ -15,8 +15,18 @@ import {
 } from 'react-native';
 import { TextInput, TouchableOpacity } from 'react-native-gesture-handler';
 import * as Animatable from 'react-native-animatable';
+import {AuthContext} from '../components/context'
 
 const SplashScreen = ({ navigation }) => {
+
+    const {catchAsyncToken} = React.useContext(AuthContext);
+
+    const AsyncCather = async () => {
+
+        await catchAsyncToken();
+        navigation.navigate("Login")
+    }
+
     return (
         <View style={styles.container}>
             <StatusBar 
@@ -36,7 +46,7 @@ const SplashScreen = ({ navigation }) => {
             <Animatable.Text style={styles.welcomeTextBottomLine}animation="fadeInLeft" >artık çok kolay.  </Animatable.Text>
                 <Animatable.View animation="fadeInUpBig"><TouchableOpacity
             style= {styles.touchableButton}
-            onPress={() => navigation.navigate("Login")}
+            onPress={() => AsyncCather() }
             >
                 <Text style= {styles.touchableButtonText}>Başlayalım</Text>
             </TouchableOpacity>
