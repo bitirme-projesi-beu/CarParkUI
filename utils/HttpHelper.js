@@ -1,4 +1,10 @@
 import axios from 'axios'
+import AsyncStorage from '@react-native-community/async-storage';
+
+const getStoragedToken = async () => {
+      const value = await AsyncStorage.getItem('@token')
+      return value;
+  }
 
 const url = (endpoint) =>{
     var apiURL = 'https://mumincarpark.herokuapp.com/api/v2' + endpoint;
@@ -17,11 +23,12 @@ const Register = (data) => {
     .catch(err =>console.log("Hata Alındı =>", err));
 }
 
-const getParkingLots = () => {
+const getParkingLots = async () => {
+    var token = await getStoragedToken();
     var apiURL = url("/parkinglots")
     let header ={
         headers: {
-            "Authorization" :"Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0Iiwicm9sZXMiOlt7ImF1dGhvcml0eSI6IlJPTEVfRFJJVkVSIn1dLCJleHAiOjE1OTE5MDE4MzIsImlhdCI6MTU5MTg4MzgzMn0.Ixze1ZgRoWjioIBnUT0HtuhY1GvUeRoiCKz30dGl9QRVCaci-6cksKW2SW_g8x_xe5Whws2Ih7LBIR0rHXcp1g"
+            "Authorization" :"Bearer " + token
         } 
     }
 

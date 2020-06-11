@@ -7,7 +7,6 @@
  */
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-
 import React, { useState, useEffect } from 'react';
 import {
   SafeAreaView,
@@ -32,20 +31,36 @@ import { AuthContext } from '../CarParkUI/components/context'
 import HomeTabScreen from '../CarParkUI/screens/HomeTabScreen';
 import { color } from 'react-native-reanimated';
 import * as Http from '../CarParkUI/utils/HttpHelper';
+import AsyncStorage from '@react-native-community/async-storage';
+
+
 
 const App = () => {
   const [isLoading,setIsLoading] = React.useState(true);
   const [userToken,setUserToken] = React.useState(null);
+
+  const storeData = async (value) => {
+    try {
+      await AsyncStorage.setItem('@token', value);
+    } catch (e) {
+    }
+  }
+
+  const storeUserJSON = async (value) => {
+    console.log("USER JSON => ",value);
+  }
 
   const authContext = React.useMemo(() =>({
     signIn: async (data) => {
       console.log("signIn Method RUNNING", data);      
       Http.Login(data).then(res =>{
         if(res.status===200){
-        return res.data;}
+          storeUserJSON(res);
+          return res.data;}
       })
       .then(data=> {
         setUserToken(data);
+        storeData(data);
       })
       .catch(err => alert("Yanlış Giriş bilgileri", err))
       setIsLoading(false);

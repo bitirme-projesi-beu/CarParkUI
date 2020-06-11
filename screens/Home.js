@@ -23,6 +23,9 @@ import {request, PERMISSIONS} from 'react-native-permissions';
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 import * as Http from '../utils/HttpHelper';
+import AsyncStorage from '@react-native-community/async-storage';
+
+
 
 class HomeScreen extends Component{
 
@@ -74,7 +77,20 @@ class HomeScreen extends Component{
             ...this.state,
             parkingLots:parkingLotsData
           });
+
+          await this.getAsyncData();
      }
+
+     getAsyncData = async () => {
+        try {
+          const value = await AsyncStorage.getItem('@token')
+          if(value !== null) {
+            console.log("TOKEN OKUNDU => ", value)
+          }
+        } catch(e) {
+            console.log("HATA TOKEN OKUNAMADI => ", e)
+        }
+      }
 
     requestLocationPermission = async () => {
         if(Platform.OS === 'ios') {
