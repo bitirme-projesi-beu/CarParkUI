@@ -5,8 +5,7 @@ import { createMaterialBottomTabNavigator } from '@react-navigation/material-bot
 
 import HomeScreen from './Home';
 import ProfileScreen from './Profile';
-import ReservationsScreen from './Reservations';
-
+import ReservationTabScreen from './ReservationTabScreen';
 
 const Tab = createMaterialBottomTabNavigator();
 const HomeTabScreen =({navigation}) => {
@@ -41,7 +40,7 @@ return (<Tab.Navigator
     />
     <Tab.Screen
       name="Reservations"
-      component={ReservationsScreen}
+      component={ReservationTabScreen}
       options={{
         tabBarLabel: 'Geçmişim',
         tabBarColor:'#330033',
