@@ -1,12 +1,4 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow strict-local
- */
 import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
 import React, { useState, useEffect } from 'react';
 import {
   SafeAreaView,
@@ -17,19 +9,9 @@ import {
   StatusBar,
   ActivityIndicator,
 } from 'react-native';
-
-import {
-  Header,
-  LearnMoreLinks,
-  Colors,
-  DebugInstructions,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
-import Icon from 'react-native-vector-icons/Ionicons';
 import RootStackScreen from '../CarParkUI/screens/RootStackScreen';
 import { AuthContext } from '../CarParkUI/components/context'
 import HomeTabScreen from '../CarParkUI/screens/HomeTabScreen';
-import { color } from 'react-native-reanimated';
 import * as Http from '../CarParkUI/utils/HttpHelper';
 import AsyncStorage from '@react-native-community/async-storage';
 
@@ -50,6 +32,11 @@ const App = () => {
     console.log("USER JSON => ",value);
   }
 
+  const waitForSec = async () => {
+    setTimeout(() => {
+      setIsLoading(false);
+    },1000);
+  }
   const authContext = React.useMemo(() =>({
     signIn: async (data) => {
       console.log("signIn Method RUNNING", data);      
@@ -61,11 +48,14 @@ const App = () => {
       .then(data=> {
         setUserToken(data);
         storeData(data);
+        setIsLoading(true);
+        waitForSec();
       })
       .catch(err => alert("Yanlış Giriş bilgileri", err))
       setIsLoading(false);
     },
-    signOut:() => {
+    signOut:async () => {
+      await AsyncStorage.removeItem('@token');
       setUserToken(null);
       setIsLoading(false);
     },
@@ -80,6 +70,16 @@ const App = () => {
         return res;      
       })
       .catch(err =>alert("Böyle bir üyelik var"))
+    },
+    catchAsyncToken:async () =>{
+      const value = await AsyncStorage.getItem('@token')
+      if(value !== null){
+        setUserToken(value);
+        setIsLoading(true);
+        waitForSec();
+      }
+      
+      console.log("ASYNC ITEM => ", value);
     },
   }));
 

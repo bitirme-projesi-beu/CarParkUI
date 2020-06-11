@@ -70,7 +70,7 @@ class HomeScreen extends Component{
 
     async componentDidMount(){
         this.requestLocationPermission();
-        
+
         var parkingLotsData =  await this.prepareData().then(res =>res)
 
         this.setState({
