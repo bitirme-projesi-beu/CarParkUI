@@ -1,5 +1,5 @@
-import React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
+import React, { useState, useEffect } from 'react';
+import { NavigationContainer, useTheme } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import {
   SafeAreaView,
@@ -12,24 +12,50 @@ import {
 } from 'react-native';
 import { TextInput, TouchableOpacity } from 'react-native-gesture-handler';
 import {AuthContext} from '../components/context'
-import { IconButton,Button } from 'react-native-paper';
+import { IconButton,Button,Avatar} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import * as Http from '../utils/HttpHelper';
+
 
 const ProfileScreen = ({navigation}) => {
+  const {signOut} = React.useContext(AuthContext);
+  const [data, setData] = useState({ hits: [] });
+  const [userNameSurname, setNameSurname] = useState(null);
 
+  useEffect(() => {
+    async function getProfileData() {
+      Http.getDataFromAPI("/users/my-profile").then(res =>{
+      setData(res)
+      setLetter(res);
+      })
+      .catch(err => console.log(err));
+    }
+    getProfileData(); 
+  }, [])
 
-    const {signOut} = React.useContext(AuthContext);
-
+  const setLetter = (res) => {
+    console.log("LETTER ", res);
+    var nameFirstLetter = res.name[0];
+    var surnameFirstLetter = res.surname[0];
+    var FirstLetters = nameFirstLetter + surnameFirstLetter
+    FirstLetters = String(FirstLetters).toUpperCase();
+    setNameSurname(FirstLetters);
+    }
   return (
     <View style={styles.container}>
-                <StatusBar 
-            backgroundColor= '#827397'
-            barStyle='light-content'
+        <StatusBar 
+          backgroundColor= '#827397'
+          barStyle='light-content'
         />
         <View style={styles.avatar}>
-        <Icon name="account-circle" size={100} color="#2E304F" />
+        <Avatar.Text size={100} label={userNameSurname} style={styles.avatarIcon} />
         </View>
-        <Text style={styles.nameSurname}> Ahmet Köse </Text>
+        <Text style={styles.nameSurname}> {data.name} {data.surname} </Text>
+
+        <View style={styles.emailInfo}>
+          <Text style={styles.emailInfoText}>E-mail : </Text>
+          <Text style={styles.emailInfoText}>{data.email}</Text>
+        </View>
         <View style={styles.butonExitView}>
         <Button icon="door" mode="outlined" color='#FF6633' labelStyle={styles.butonExitText} style={styles.butonExit} onPress={() =>{signOut()}} >
         Çıkış Yap
@@ -81,11 +107,22 @@ const ProfileScreen = ({navigation}) => {
     },
     avatar:{
       alignItems:"center",
-
+    },
+    avatarIcon:{
+      backgroundColor:"#2E304F",
     },
     nameSurname:{
       marginTop:10,
       textAlign:"center",
       fontSize:30,
+    },
+    emailInfo:{
+      flexDirection: 'row',
+      justifyContent: 'center',
+      marginTop:40,
+    },
+    emailInfoText: {
+      fontSize:17,
+      marginLeft:5,
     }
   });
