@@ -3,6 +3,7 @@ import {
   SafeAreaView,
   StyleSheet,
   ScrollView,
+  RefreshControl,
   View,
   Text,
   StatusBar,
@@ -46,7 +47,8 @@ class ReservationsScreen extends Component{
             hourTime:null
         }],
         hasActiveReservation: false,
-        reservationCancelData:null
+        reservationCancelData:null,
+        refresh:false,
     }
 
     async componentDidMount() {
@@ -115,6 +117,19 @@ class ReservationsScreen extends Component{
             marginBottom:10,
         }
     }
+    refreshScroll = () =>{
+        this.setState({
+            ...this.state,
+            refresh:true
+        })        
+        this.getActiveReservation();
+        setTimeout(() => {
+            this.setState({
+                ...this.state,
+                refresh:false
+            })          
+        },1000);
+    }
 
     render(){
         return (
@@ -123,7 +138,10 @@ class ReservationsScreen extends Component{
                 backgroundColor= '#330033'
                 barStyle='light-content'
             /> 
-            <ScrollView>
+            <ScrollView
+                contentContainerStyle={styles.scrollView}
+                refreshControl={ <RefreshControl refreshing={this.state.refresh} onRefresh={this.refreshScroll} /> }
+                >
                 <View style={styles.content}> 
                     {this.state.activeReservations.map(rez =>        
                         <View style={this.reservationBoxStyle(rez.active)}> 
