@@ -26,3 +26,50 @@ const TicketScreen = ({navigation}) => {
   };
 
   export default TicketScreen;
+
+
+  //NOTES
+  /*
+  {rez.reservationRate === null ?(
+                    <View style={styles.reservationRate}>
+                    <Button icon="star" mode="contained" color='#142850' labelStyle={styles.buttonRateText} style={styles.buttonRate} onPress={() =>{alert("Puan Vermeden Geçme Bro")}} >
+                    Puan Ver
+                    </Button>
+                    </View> )
+                    :
+                    <View style={styles.reservationRate}>
+                        <View style={styles.ratingThanks}> 
+                        {rez.reservationRate === 1 ?(
+                            <View style={styles.hearts}> 
+                            <Icon name="heart" size={30} color="#2E304F" />
+                            </View>)
+                        : rez.reservationRate ===2 ?(
+                        <View style={styles.hearts}> 
+                        <Icon name="heart" size={30} color="#2E304F" />
+                        <Icon name="heart" size={30} color="#2E304F" />
+                        </View>)
+                        : rez.reservationRate ===3 ?(
+                        <View style={styles.hearts}> 
+                        <Icon name="heart" size={30} color="#2E304F" />
+                        <Icon name="heart" size={30} color="#2E304F" />
+                        <Icon name="heart" size={30} color="#2E304F" />
+                        </View>)
+                        : rez.reservationRate ===4 ?(
+                            <View style={styles.hearts}> 
+                            <Icon name="heart" size={30} color="#2E304F" />
+                            <Icon name="heart" size={30} color="#2E304F" />
+                            <Icon name="heart" size={30} color="#2E304F" />
+                            <Icon name="heart" size={30} color="#2E304F" />
+                            </View>)
+                        :
+                        <View style={styles.hearts}> 
+                        <Icon name="heart" size={30} color="#2E304F" />
+                        <Icon name="heart" size={30} color="#2E304F" />
+                        <Icon name="heart" size={30} color="#2E304F" />
+                        <Icon name="heart" size={30} color="#2E304F" />
+                        <Icon name="heart" size={30} color="#2E304F" />
+                        </View>
+                         }
+                        </View>
+                    </View>
+                    } */

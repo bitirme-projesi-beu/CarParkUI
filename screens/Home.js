@@ -26,10 +26,7 @@ import * as Http from '../utils/HttpHelper';
 import AsyncStorage from '@react-native-community/async-storage';
 import moment from 'moment';
 
-
-
 class HomeScreen extends Component{
-
 
     state={
         clickToShowCarousel :"none",
@@ -62,13 +59,12 @@ class HomeScreen extends Component{
         }
 
     prepareData = async () =>{
-        return Http.getParkingLots().then(res =>res)
+        return Http.getDataFromAPI("/parkinglots").then(res =>res)
           .catch(err => console.log(err))
     }
 
     async componentDidMount(){
         this.requestLocationPermission();
-
         var parkingLotsData =  await this.prepareData().then(res =>res)
 
         this.setState({
@@ -135,6 +131,7 @@ class HomeScreen extends Component{
             modalVisible:true,
             modalData:data
           });
+          
     }
 
     closeModal = () => {
@@ -239,20 +236,20 @@ class HomeScreen extends Component{
             showPlateWarn:true,
             });
         } else {
-        this.setState({
-            ...this.state,
-            showPlateWarn:false,
-            });
+            var result = await Http.Reservation(this.state.reservationData);
+            if(result===201){
+                alert("Rezervasyonunuz Başarıyla Oluşturuldu.");
+                this.setState({
+                    ...this.state,
+                    modalVisible:false,
+                    });
+            }
+            else {
+                alert("Rezervasyon oluşturulamadı, lütfen tekrar deneyiniz.");
+            }
         }
 
-        console.log("REZ DATA =>   ", this.state.reservationData);
-        var result = await Http.Reservation(this.state.reservationData);
-        if(result===201){
-            alert("Rezervasyonunuz Başarıyla Oluşturuldu.");
-        }
-        else {
-            alert("Rezervasyon oluşturulamadı, lütfen tekrar deneyiniz.");
-        }
+
       }
     render(){
                 return (

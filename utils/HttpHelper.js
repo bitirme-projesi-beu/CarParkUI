@@ -35,19 +35,30 @@ const Reservation = async (data) => {
     .catch(err => console.log("REZERVASYON HATALI => ", err))
 }
 
-const getParkingLots = async () => {
+const getDataFromAPI = async (endpoint) => { 
     var token = await getStoragedToken();
-    var apiURL = url("/parkinglots")
+    var apiURL = url(endpoint)
     let header ={
         headers: {
             "Authorization" :"Bearer " + token
         } 
     }
-
     return axios.get(apiURL,header)
     .then(res =>res.data)
-    .catch(err =>console.log("Parking Lots Doesn't getted =>", err));
+    .catch(err =>err);
 }
+
+const CancelReservation = async (data) => {
+    var token = await getStoragedToken();
+    var apiURL =url("/reservations");
+    return axios.delete(apiURL,{headers:{Authorization:"Bearer "+token},data:{
+        "parkingLotId": data.parkingLotId,
+        "createdAt": data.createdAt,
+        "id": data.id
+    }}).then(res =>res.status)
+    .catch(err => alert("Rezervasyon iptal edilirken hata!"))
+} 
 export {
-    Login,Register,getParkingLots,Reservation
+    Login,Register,getDataFromAPI,Reservation,CancelReservation
 }
+

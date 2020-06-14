@@ -23,7 +23,6 @@ const SplashScreen = ({ navigation }) => {
 
     const AsyncCather = async () => {
 
-        await catchAsyncToken();
         navigation.navigate("Login")
     }
 
