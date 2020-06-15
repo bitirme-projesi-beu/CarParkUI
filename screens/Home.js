@@ -24,11 +24,9 @@ const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 import * as Http from '../utils/HttpHelper';
 import AsyncStorage from '@react-native-community/async-storage';
-
-
+import moment from 'moment';
 
 class HomeScreen extends Component{
-
 
     state={
         clickToShowCarousel :"none",
@@ -54,23 +52,19 @@ class HomeScreen extends Component{
         parkingLots : [],
         reservationData: {  
             parkingLotId: 0,
-            driverId: 0,
             createdAt: "2020-06-11T14:24:56.695Z",
-            plate: "",
-            hourlyWage: 0
+            plate: ""
         },
         showPlateWarn:false
         }
 
     prepareData = async () =>{
-        return Http.getParkingLots().then(res =>res)
-          .catch(err => alert("Parking Lots Çekilemedi", err))
-    
+        return Http.getDataFromAPI("/parkinglots").then(res =>res)
+          .catch(err => console.log(err))
     }
 
     async componentDidMount(){
         this.requestLocationPermission();
-
         var parkingLotsData =  await this.prepareData().then(res =>res)
 
         this.setState({
@@ -109,14 +103,13 @@ class HomeScreen extends Component{
     }
 
     plateChangeFunc = (val,modalData) => {
+        var createdAt = moment().format('YYYY-MM-DDThh:mm:ss.000');
         this.setState({
             ...this.state,
             reservationData:{
                 parkingLotId: this.state.modalData.id,
-                driverId: this.state.reservationData.driverId,
-                createdAt:this.state.reservationData.createdAt,
+                createdAt:createdAt,
                 plate:val,
-                hourlyWage: this.state.modalData.hourlyWage
             }
           });        
     }
@@ -138,6 +131,7 @@ class HomeScreen extends Component{
             modalVisible:true,
             modalData:data
           });
+          
     }
 
     closeModal = () => {
@@ -234,21 +228,28 @@ class HomeScreen extends Component{
         }
       }
 
-      makeReservation = () => {
-          var plate = this.state.reservationData.plate;
-          if(plate.trim().length <4){
-            this.setState({
-                ...this.state,
-                showPlateWarn:true,
-              });
-          } else {
-            this.setState({
-                ...this.state,
-                showPlateWarn:false,
-              });
-          }
+      makeReservation = async () => {
+        var plate = this.state.reservationData.plate;
+        if(plate.trim().length <4){
+        this.setState({
+            ...this.state,
+            showPlateWarn:true,
+            });
+        } else {
+            var result = await Http.Reservation(this.state.reservationData);
+            if(result===201){
+                alert("Rezervasyonunuz Başarıyla Oluşturuldu.");
+                this.setState({
+                    ...this.state,
+                    modalVisible:false,
+                    });
+            }
+            else {
+                alert("Rezervasyon oluşturulamadı, lütfen tekrar deneyiniz.");
+            }
+        }
 
-          console.log(this.state.reservationData.plate);
+
       }
     render(){
                 return (

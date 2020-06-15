@@ -1,74 +1,136 @@
 import React, {Component} from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
 import {
   SafeAreaView,
   StyleSheet,
   ScrollView,
+  RefreshControl,
   View,
   Text,
   StatusBar,
   Image
 } from 'react-native';
-import { TextInput, TouchableOpacity } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { IconButton,Button } from 'react-native-paper';
-import { Rating, AirbnbRating } from 'react-native-elements';
-
+import * as Http from '../utils/HttpHelper';
+import moment from 'moment';
+import { createStackNavigator } from '@react-navigation/stack';
+import { create } from 'react-test-renderer';
 
 
 class ReservationsScreen extends Component{
 
-
     state={
-        reservations : [
-            {
-                id:1,
-                carParkName:"Dünyam Otopark",
-                carParkArea:"Beşiktaş",
-                reservationPrice:"20",
-                reservationRate:null,
-            },           
-            {
-                id:1,
-                carParkName:"Kardeşler Otopark",
-                carParkArea:"Beyoğlu",
-                reservationPrice:"42",
-                reservationRate:3,
-            },            
-            {
-                id:1,
-                carParkName:"Sokak Otopark",
-                carParkArea:"Kadıköy",
-                reservationPrice:"10",
-                reservationRate:4,
-            },            
-            {
-                id:1,
-                carParkName:"Sokak Otopark",
-                carParkArea:"Kadıköy",
-                reservationPrice:"10",
-                reservationRate:5,
-            },            
-            {
-                id:1,
-                carParkName:"Sokak Otopark",
-                carParkArea:"Kadıköy",
-                reservationPrice:"10",
-                reservationRate:1,
-            },            
-            {
-                id:1,
-                carParkName:"Sokak Otopark",
-                carParkArea:"Kadıköy",
-                reservationPrice:"10",
-                reservationRate:null,
-            }
-        ]
+        activeReservation : {
+            active: null,
+            cost: null,
+            createdAt: "0",
+            deactivatedAt: null,
+            driverId: 0,
+            hourlyWage: 0,
+            id: 0,
+            parkingLotId: 0,
+            plate: "",
+            parkingLotName: null,
+        },
+        activeReservations : [{
+            active: null,
+            cost: null,
+            createdAt: null,
+            deactivatedAt: null,
+            driverId: null,
+            hourlyWage: null,
+            id: null,
+            parkingLotId: null,
+            parkingLotName: null,
+            plate: null,
+            dayTime:null,
+            hourTime:null
+        }],
+        hasActiveReservation: false,
+        reservationCancelData:null,
+        refresh:false,
+        isReservationRefresh:false,
     }
 
+    async componentDidMount() {
+        await this.getActiveReservation();
 
+        // setInterval(this.getActiveReservation, 5000);
+    }
 
+    getActiveReservation = async () => {
+        var activeReservationData = await Http.getDataFromAPI("/reservations/drivers-reservations").then(res =>res)
+        .catch(err => console.log(err));
+        if(activeReservationData!==undefined){
+            this.setState({
+                ...this.state,
+                activeReservations:activeReservationData,
+                hasActiveReservation:true
+            });
+        }       
+    }  
+ 
+    rezPriceFormat = (cost) =>{
+        var rezCost = Number(cost);
+        return rezCost.toFixed(2);
+    }
+
+    rezDateFormat = (createdAt) =>{
+        var rezCreatedDate = String(createdAt);
+        var res = rezCreatedDate.split("T");
+        return res[0] + "  /  " + res[1];
+    }
+
+    cancelReservation = async (id,parkingLotId) => {
+        var createdAt = moment().format('YYYY-MM-DDThh:mm:ss.000');
+        this.setState({
+            ...this.state,
+            reservationCancelData: {
+                parkingLotId:parkingLotId,
+                createdAt: createdAt,
+                id:id,
+            }
+        }, () => {
+        Http.CancelReservation(this.state.reservationCancelData).then(res => {
+            if(res===200){
+                alert("Rezervasyon Başarıyla İptal Edildi");
+                this.getActiveReservation();
+            }
+        })
+        })
+
+    }
+
+    reservationBoxStyle = (isActive) => {
+        var backgroundColor;
+        if(isActive===true){
+            backgroundColor = '#e5b964';
+        }else{
+            backgroundColor = '#e5cce5';
+        }
+        return {
+            width:'100%',
+            padding:5,
+            borderColor:backgroundColor,
+            borderWidth:1,
+            backgroundColor:backgroundColor,
+            borderRadius:8,
+            marginBottom:10,
+        }
+    }
+    refreshScroll = () =>{
+        this.setState({
+            ...this.state,
+            refresh:true
+        })        
+        this.getActiveReservation();
+        setTimeout(() => {
+            this.setState({
+                ...this.state,
+                refresh:false
+            })          
+        },1000);
+    }
 
     render(){
         return (
@@ -76,90 +138,47 @@ class ReservationsScreen extends Component{
             <StatusBar 
                 backgroundColor= '#330033'
                 barStyle='light-content'
-            />
-            <ScrollView>
-            <View style={styles.content}>
-
-                {this.state.reservations.map(rez =>
-                    
-                <View style={styles.reservationBox}>
-                    <View style={styles.reservationDetail}>
-                        <View style={styles.reservationInfo}>
-                        <Text style={styles.carParkNameText}>{rez.carParkName}</Text>
-                        <Text style={styles.carParkLocationText}>{rez.carParkArea}</Text>
-                        <Text style={styles.reservationDateText}>07/07/2020</Text>
-                        </View>
-                        <View style={styles.reservationPrice}>
-                            <Text style={styles.reservationPriceText}>{rez.reservationPrice} ₺</Text>
-                        </View>
-                        <View style={styles.reservationPhoto}>
-                            <Image source={require('../assests/park.png')} style={styles.reservationPhotoIMG}/>
-                        </View>
-                    </View>
-                    {rez.reservationRate === null ?(
-                    <View style={styles.reservationRate}>
-                    <Button icon="star" mode="contained" color='#142850' labelStyle={styles.buttonRateText} style={styles.buttonRate} onPress={() =>{alert("Puan Vermeden Geçme Bro")}} >
-                    Puan Ver
-                    </Button>
-                    </View> )
-                    :
-                    <View style={styles.reservationRate}>
-                        <View style={styles.ratingThanks}> 
-                        {rez.reservationRate === 1 ?(
-                            <View style={styles.hearts}> 
-                            <Icon name="heart" size={30} color="#2E304F" />
+            /> 
+            <ScrollView
+                contentContainerStyle={styles.scrollView}
+                refreshControl={ <RefreshControl refreshing={this.state.refresh} onRefresh={this.refreshScroll} /> }
+                >
+                <View style={styles.content}> 
+                    {this.state.activeReservations.map(rez =>        
+                        <View style={this.reservationBoxStyle(rez.active)}> 
+                            <View style={styles.reservationDetail}>
+                                <View style={styles.reservationInfo}>
+                                <Text style={styles.carParkNameText}>{rez.parkingLotName}</Text>
+                                <Text style={styles.reservationDateText}>{this.rezDateFormat(rez.createdAt)}</Text>
+                                </View>
+                                <View style={styles.reservationPrice}>
+                                    {rez.cost !== null ? (
+                                    <Text style={styles.reservationPriceText}>{this.rezPriceFormat(rez.cost)} ₺</Text> 
+                                    ):
+                                    null
+                                }
+                                </View>
+                                <View style={styles.reservationPhoto}>
+                                    <Image source={require('../assests/park.png')} style={styles.reservationPhotoIMG}/>
+                                </View>
+                            </View>
+                            {rez.active === true ? (
+                            <View style={styles.activeReservationDeleteView}>
+                            <Button icon="close" mode="contained" color='#142850' labelStyle={styles.buttonRateText} style={styles.buttonRate} onPress={() =>{this.cancelReservation(rez.id,rez.parkingLotId)}} >
+                            İptal Et
+                            </Button>
                             </View>)
-                        : rez.reservationRate ===2 ?(
-                        <View style={styles.hearts}> 
-                        <Icon name="heart" size={30} color="#2E304F" />
-                        <Icon name="heart" size={30} color="#2E304F" />
-                        </View>)
-                        : rez.reservationRate ===3 ?(
-                        <View style={styles.hearts}> 
-                        <Icon name="heart" size={30} color="#2E304F" />
-                        <Icon name="heart" size={30} color="#2E304F" />
-                        <Icon name="heart" size={30} color="#2E304F" />
-                        </View>)
-                        : rez.reservationRate ===4 ?(
-                            <View style={styles.hearts}> 
-                            <Icon name="heart" size={30} color="#2E304F" />
-                            <Icon name="heart" size={30} color="#2E304F" />
-                            <Icon name="heart" size={30} color="#2E304F" />
-                            <Icon name="heart" size={30} color="#2E304F" />
-                            </View>)
-                        :
-                        <View style={styles.hearts}> 
-                        <Icon name="heart" size={30} color="#2E304F" />
-                        <Icon name="heart" size={30} color="#2E304F" />
-                        <Icon name="heart" size={30} color="#2E304F" />
-                        <Icon name="heart" size={30} color="#2E304F" />
-                        <Icon name="heart" size={30} color="#2E304F" />
+                            :
+                            null }
                         </View>
-                         }
-                        </View>
-                    </View>
-                    }
-                </View>
-                    
-                    
-                    
-                    
-                    
                     )}
-
-
-
-
-            </View></ScrollView>
+                </View>
+            </ScrollView>
         </View>
-        )}
-
-
+    )}
 }
 
-
-
-  export default ReservationsScreen;
+  export default ReservationsScreen
 
   const styles = StyleSheet.create({
     container: {
@@ -177,6 +196,15 @@ class ReservationsScreen extends Component{
         borderColor:'#e5cce5',
         borderWidth:1,
         backgroundColor:'#e5cce5',
+        borderRadius:8,
+        marginBottom:10,
+    },
+    activeReservationBox:{
+        width:'100%',
+        padding:5,
+        borderColor:'#e5b964',
+        borderWidth:1,
+        backgroundColor:'#e5b964',
         borderRadius:8,
         marginBottom:10,
     },
@@ -227,7 +255,7 @@ class ReservationsScreen extends Component{
     reservationDateText:{
         fontSize:16,
         color:'#260026',
-        marginTop:-3
+        marginTop:3
     },
     reservationPriceText:{
         fontSize:23,
@@ -250,5 +278,7 @@ class ReservationsScreen extends Component{
         flexDirection: 'row',
         justifyContent: 'space-around',
     },
-
+    activeReservationDeleteView:{
+        alignItems:"center",
+    },
   });

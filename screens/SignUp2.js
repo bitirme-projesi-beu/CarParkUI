@@ -15,6 +15,7 @@ import { TextInput, TouchableOpacity } from 'react-native-gesture-handler';
 import * as Animatable from 'react-native-animatable';
 import {AuthContext} from '../components/context';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import moment from 'moment';
 
 const SingUpScreen = ({navigation}) => {
     const {signUp} = React.useContext(AuthContext);
@@ -25,24 +26,28 @@ const SingUpScreen = ({navigation}) => {
         surname: '',
         email: '',
         password: '',
-        createdAt:"2020-06-07T20:58:45.877",
+        createdAt:"",
         checkName: 'true',
         checkSurname: 'true',
         checkEmail: 'true',
         checkPassword: 'true',
         permissionSignUp:'false'
-      });
+    });
 
-      const [loginData, setLoginData] = React.useState({
-        email: '',
-        password: '',
-      });  
+    const [loginData, setLoginData] = React.useState({
+    email: '',
+    password: '',
+    });  
+    
     const NameChangeFunc = (val) => {
+        var createdAt = moment().format('YYYY-MM-DDThh:mm:ss.000');
+        console.log("VAL = ",val)
         if( val.trim().length > 0 ) {
             setData({
                 ...data,
                 name: val,
-                checkName:true
+                checkName:true,
+                createdAt:createdAt
             });
         }else {
             setData({
@@ -119,12 +124,13 @@ const SingUpScreen = ({navigation}) => {
     }
 
     async function SignUpFunc()  {
-        
+        console.log(data);
         if(data.checkEmail===true && 
            data.checkName ===true && 
            data.checkPassword ===true && 
            data.checkSurname ===true)
-        {
+        {   
+
             var result = await signUp(data);
             console.log("bekledik", result);
             if(result === 201){
