@@ -49,6 +49,7 @@ class ReservationsScreen extends Component{
         hasActiveReservation: false,
         reservationCancelData:null,
         refresh:false,
+        isReservationRefresh:false,
     }
 
     async componentDidMount() {
@@ -177,7 +178,7 @@ class ReservationsScreen extends Component{
     )}
 }
 
-  export default ReservationsScreen;
+  export default ReservationsScreen
 
   const styles = StyleSheet.create({
     container: {

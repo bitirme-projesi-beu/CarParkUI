@@ -58,6 +58,7 @@ const CancelReservation = async (data) => {
     }}).then(res =>res.status)
     .catch(err => alert("Rezervasyon iptal edilirken hata!"))
 } 
+
 export {
     Login,Register,getDataFromAPI,Reservation,CancelReservation
 }
