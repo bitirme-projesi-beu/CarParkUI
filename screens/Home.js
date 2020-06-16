@@ -31,8 +31,8 @@ class HomeScreen extends Component{
     state={
         clickToShowCarousel :"none",
         region :{
-            latitude : 41.130951, 
-            longitude : 28.997386,
+            latitude : 41.114845, 
+            longitude : 29.009531,
             latitudeDelta: 0.018,
             longitudeDelta: 0.019,
         },
@@ -55,7 +55,11 @@ class HomeScreen extends Component{
             createdAt: "2020-06-11T14:24:56.695Z",
             plate: ""
         },
-        showPlateWarn:false
+        showPlateWarn:false,
+        userLocation: {
+            latitude: 41.114845,
+            longitude: 29.009531,
+            }
         }
 
     prepareData = async () =>{
@@ -307,20 +311,6 @@ class HomeScreen extends Component{
      style={styles.map}
      onPress={x => this.changeCarouselDisplay(x)}
      initialRegion={this.state.region}>
-     {/* {
-        this.state.kordinatlar.map((marker,index) => 
-            <Marker 
-            key={marker.id}
-            onPress={() => this.OnMarkerPressed(marker,index)}
-            coordinate={{
-               latitude: marker.latitude,
-               longitude: marker.longitude,
-            }}
-            image={require('../assests/marker.png')}
-           />
-    )
-    }  */}
-
 {
         this.state.parkingLots.map((marker,index) => 
             <Marker 
@@ -334,7 +324,13 @@ class HomeScreen extends Component{
            />
     )
     } 
-
+    <Marker 
+            coordinate={{
+               latitude: this.state.userLocation.latitude,
+               longitude: this.state.userLocation.longitude,
+            }}>
+                <Icon name="crosshairs-gps" size={30} color="#2E304F" />
+            </Marker>
  
 
    </MapView> 

@@ -59,7 +59,19 @@ const CancelReservation = async (data) => {
     .catch(err => alert("Rezervasyon iptal edilirken hata!"))
 } 
 
+const RatingTicket = async (data) => {
+    var token = await getStoragedToken();
+    let header ={
+        headers: {
+            "Authorization" :"Bearer " + token
+        } 
+    }
+    var apiURL =url("/tickets/rate-parking-lot");
+    return axios.post(apiURL,data,header).then(res =>res.status)
+    .catch(err => console.log("Puanlama Hatalı => ", err))
+} 
+
 export {
-    Login,Register,getDataFromAPI,Reservation,CancelReservation
+    Login,Register,getDataFromAPI,Reservation,CancelReservation,RatingTicket
 }
 

@@ -50,3 +50,12 @@ Prepare Parking Lot Data
   "rating": 3,
   "isDeleted": false
 }
+
+
+                    EKLERKEN : { Ticket : 
+
+  "parkingLotId": 4,
+  "driverId": 1,
+  "plate": "34grm74",
+  "createdAt": "2020-06-16T19:49:08.207Z"
+}

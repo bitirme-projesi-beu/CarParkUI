@@ -6,17 +6,18 @@ import {
   RefreshControl,
   View,
   Text,
+  Modal,
   StatusBar,
-  Image
+  Image,
+  TouchableOpacity
 } from 'react-native';
-import Icon from 'react-native-vector-icons/Entypo';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { IconButton,Button } from 'react-native-paper';
 import * as Http from '../utils/HttpHelper';
 import moment from 'moment';
 import { createStackNavigator } from '@react-navigation/stack';
 import { create } from 'react-test-renderer';
 import { ceil } from 'react-native-reanimated';
-
 
 class TicketScreen extends Component{
 
@@ -32,32 +33,21 @@ class TicketScreen extends Component{
             cost: null,
             rating: null
         }],
-        tempticketDatas : [{
-            id: 1,
-            parkingLotName:"Güzel Yer",
-            parkingLotId: 2,
-            driverId: 3,
-            plate: "34GRM74",
-            createdAt: "2020-06-14T21:05:06.916Z",
-            exitedAt: "2020-06-14T21:05:06.916Z",
-            isItInside: false,
-            cost: 35,
-            rating: null
-        },{
-            id: 2,
-            parkingLotName:"Hoş Yer",
-            parkingLotId: 2,
-            driverId: 3,
-            plate: "20UYA394",
-            createdAt: "2020-06-14T21:05:06.916Z",
-            exitedAt: "2020-06-14T21:05:06.916Z",
-            isItInside: false,
-            cost: 23,
-            rating: null
-        }
-    
-    ],
     refresh:false,
+    modalVisible : false,
+    ratingTicketId : null,
+    ratingTicketRate: null,
+    rateStarColors :{
+        c1:"#2E304F",
+        c2:"#2E304F",
+        c3:"#2E304F",
+        c4:"#2E304F",
+        c5:"#2E304F",
+    },
+    rateEntity: {
+        id: null,
+        rating: null
+    }
     }
 
     async componentDidMount() {
@@ -66,14 +56,12 @@ class TicketScreen extends Component{
     }
 
     getTickets = async () => {
-        var ticketData = await Http.getDataFromAPI("/tickets/driver-tickets").then(res=> {console.log("ASIL RESULT =>",res)
-        return res})
+        var ticketData = await Http.getDataFromAPI("/tickets/driver-tickets").then(res=> res)
         .catch(err => console.log("Ticket Çekerken Hata =>",err));
             this.setState({
                 ...this.state,
                 ticketDatas:ticketData,
             });
-        console.log("Ticket Datas => ",this.state.ticketDatas); 
     }
 
     ticketDateFormat = (createdAt,index) =>{
@@ -124,9 +112,173 @@ class TicketScreen extends Component{
         },500);
     }
 
+    ratingClick =(data) => {
+        this.setState({
+            ...this.state,
+            modalVisible:true,
+            ratingTicketId:data,
+          });
+          
+    }
+    
+    ratingStar = (rate) => {
+        var redColor = "#ff0000";
+        var defaultColor = "#2E304F";
+        if(rate===1){
+            this.setState({
+                ...this.state,
+                rateStarColors:{
+                    c1:redColor,
+                    c2:defaultColor,
+                    c3:defaultColor,
+                    c4:defaultColor,
+                    c5:defaultColor,
+                },
+                ratingTicketRate : rate,
+              });
+        }else if (rate===2){
+            this.setState({
+                ...this.state,
+                rateStarColors:{
+                    c1:redColor,
+                    c2:redColor,
+                    c3:defaultColor,
+                    c4:defaultColor,
+                    c5:defaultColor,
+                },
+                ratingTicketRate : rate,
+              });
+
+        }else if (rate===3){
+            this.setState({
+                ...this.state,
+                rateStarColors:{
+                    c1:redColor,
+                    c2:redColor,
+                    c3:redColor,
+                    c4:defaultColor,
+                    c5:defaultColor,
+                },
+                ratingTicketRate : rate,
+              });
+
+        }else if (rate===4){
+            this.setState({
+                ...this.state,
+                rateStarColors:{
+                    c1:redColor,
+                    c2:redColor,
+                    c3:redColor,
+                    c4:redColor,
+                    c5:defaultColor,
+                },
+                ratingTicketRate : rate,
+              });
+
+        }else if (rate===5) {
+            this.setState({
+                ...this.state,
+                rateStarColors:{
+                    c1:redColor,
+                    c2:redColor,
+                    c3:redColor,
+                    c4:redColor,
+                    c5:redColor,
+                },
+                ratingTicketRate : rate,
+              });
+        }
+    }
+
+    rateTicket = () => {
+        this.setState({
+            rateEntity:{
+                id : this.state.ratingTicketId,
+                rating: this.state.ratingTicketRate,
+            }
+            }, () => {
+                Http.RatingTicket(this.state.rateEntity).then(res => {
+                    if(res===200){
+                        console.log("BİZ PUAN VERDİK =>",res);
+                    }
+                 })
+            }
+        )
+        this.closeModal();
+
+    }
+
+    closeModal = () =>{
+        this.setState({
+            ...this.state,
+            modalVisible:false,
+          });
+    }
     render(){ 
         return (
         <View style={styles.container}>
+
+        <Modal
+                animationType="slide"
+                transparent={true}
+                visible={this.state.modalVisible}
+                onRequestClose ={() => this.closeModal()}
+         >
+        <View style={styles.modalView}>
+            <View style={styles.modalContent}>
+                <View style={styles.closeModalView}>
+                    <View>
+                    <Icon name="close" size={30} color="#2E304F"  onPress ={() => this.closeModal()}/>
+                    </View>
+                </View>
+                <View style={styles.heartsRating}>
+                <TouchableOpacity
+                style={styles.touchableRate}
+                onPress={() => this.ratingStar(1)}
+                activeOpacity={.8}
+                >
+                <Icon name="heart" size={30} color={this.state.rateStarColors.c1} />
+                </TouchableOpacity>
+                <TouchableOpacity
+                style={styles.touchableRate}
+                onPress={() =>this.ratingStar(2)}
+                activeOpacity={.8}
+                >
+                <Icon name="heart" size={30} color={this.state.rateStarColors.c2} />
+                </TouchableOpacity>
+                <TouchableOpacity
+                style={styles.touchableRate}
+                onPress={() =>this.ratingStar(3)}
+                activeOpacity={.8}
+                >
+                <Icon name="heart" size={30} color={this.state.rateStarColors.c3} />
+                </TouchableOpacity>
+                <TouchableOpacity
+                style={styles.touchableRate}
+                onPress={() =>this.ratingStar(4)}
+                activeOpacity={.8}
+                >
+                <Icon name="heart" size={30} color={this.state.rateStarColors.c4} />
+                </TouchableOpacity>
+                <TouchableOpacity
+                style={styles.touchableRate}
+                onPress={() =>this.ratingStar(5)}
+                activeOpacity={.8}
+                >
+                <Icon name="heart" size={30} color={this.state.rateStarColors.c5} />
+                </TouchableOpacity>
+                </View>
+                <View style={styles.modalRatingButton}>
+                    <Button mode="contained" color='#142850' labelStyle={styles.buttonRateText} style={styles.buttonRate} 
+                    onPress={() => this.rateTicket()} >
+                    Tamam 
+                    </Button>
+                </View>
+            </View>
+        </View>
+       </Modal>
+        
+
             <StatusBar 
                 backgroundColor= '#330033'
                 barStyle='light-content'
@@ -151,12 +303,52 @@ class TicketScreen extends Component{
                                 {this.ticketCostFormat(ticket.cost)}
                             </Text>
                         </View>
-                        <View style={styles.ticketBodyRight}>
-                        <Icon name="ticket" size={50} color="#2E304F" />
+                        <View>
+                        <Image source={require('../assests/ticket.png')} style={styles.ticketPhotoIMG}/>
                         </View>
                     </View>
-                </View>
-                )}
+                    <View style={styles.ticketRating}>
+                    {ticket.rating === null && ticket.exitedAt !== null ? (
+                    <View>
+                        <Button icon="star" mode="contained" color='#142850' labelStyle={styles.buttonRateText} style={styles.buttonRate} 
+                        onPress={() => this.ratingClick(ticket.id)} 
+                        >
+                        Puan Ver 
+                        </Button>
+                    </View>)
+                    : ticket.rating === 1 ? (
+                        <View>
+                        <Icon name="heart" size={30} color="#2E304F" /> 
+                        </View>)
+                    : ticket.rating ===2 ?(
+                        <View style={styles.hearts}> 
+                            <Icon name="heart" size={30} color="#2E304F" />
+                            <Icon name="heart" size={30} color="#2E304F" />
+                        </View>)
+                        : ticket.rating ===3 ?(
+                        <View style={styles.hearts}> 
+                            <Icon name="heart" size={30} color="#2E304F" />
+                            <Icon name="heart" size={30} color="#2E304F" />
+                            <Icon name="heart" size={30} color="#2E304F" />
+                        </View>)
+                        : ticket.rating ===4 ?(
+                            <View style={styles.hearts}> 
+                            <Icon name="heart" size={30} color="#2E304F" />
+                            <Icon name="heart" size={30} color="#2E304F" />
+                            <Icon name="heart" size={30} color="#2E304F" />
+                            <Icon name="heart" size={30} color="#2E304F" />
+                            </View>)
+                        : ticket.rating === 5 ? (
+                            <View style={styles.hearts}> 
+                            <Icon name="heart" size={30} color="#2E304F" />
+                            <Icon name="heart" size={30} color="#2E304F" />
+                            <Icon name="heart" size={30} color="#2E304F" />
+                            <Icon name="heart" size={30} color="#2E304F" />
+                            <Icon name="heart" size={30} color="#2E304F" />
+                            </View>)
+                        : null }
+                    </View>
+                </View>)}
             </View>
             </ScrollView>
         </View>
@@ -201,9 +393,6 @@ class TicketScreen extends Component{
     ticketBodyLeft:{
         marginLeft:10,
     },
-    ticketBodyRight:{
-        marginRight:20,
-    },
     ticketCostText:{
         fontSize:23,
         fontWeight:"bold",
@@ -213,4 +402,58 @@ class TicketScreen extends Component{
         fontSize:15,
         color:'#260026',
     },
+    hearts:{
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+    },
+    buttonRate:{
+        backgroundColor:'#800080',
+    },
+    buttonRateText:{
+        color:'#fff',
+        fontSize:18,
+    },
+    ticketRating:{
+        alignItems:"center",
+        paddingBottom:3,
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+    },
+    modalView:{
+        flex: 2,
+        justifyContent: "center",
+        alignItems: "center",
+    },
+    modalContent:{
+        width:280,
+        height:180,
+        borderRadius:10,
+        backgroundColor:'#fff',
+        paddingLeft:10,
+        paddingRight:10,
+        paddingTop:5,
+    },
+    heartsRating:{
+        flexDirection: 'row',
+        justifyContent: 'center',
+        marginTop:20,
+    },
+    modalRatingButton:{
+        marginTop:20,
+    },
+    closeModalView:{
+        flexDirection: 'row',
+        justifyContent: 'flex-end',
+        alignItems: 'center',
+    },
+    ticketPhotoIMG:{
+        width: 50,
+        height: 50,
+        resizeMode: 'stretch',
+        marginRight:20,
+        opacity: 0.8,
+    },
+    touchableRate:{
+        margin:2,
+    }
   });
