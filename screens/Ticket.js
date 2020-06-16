@@ -190,20 +190,30 @@ class TicketScreen extends Component{
         }
     }
 
+    callback = () =>{
+        let rateEntity = {
+            id : this.state.ratingTicketId,
+            rating : this.state.ratingTicketRate
+        }
+        console.log(rateEntity);
+        Http.RatingTicket(rateEntity).then(res => {
+            if(res===200){
+                console.log("BİZ PUAN VERDİK =>",res);
+            }
+         })
+    }
+
     rateTicket = () => {
         this.setState({
+            ...this.state,
             rateEntity:{
                 id : this.state.ratingTicketId,
                 rating: this.state.ratingTicketRate,
             }
-            }, () => {
-                Http.RatingTicket(this.state.rateEntity).then(res => {
-                    if(res===200){
-                        console.log("BİZ PUAN VERDİK =>",res);
-                    }
-                 })
-            }
-        )
+            },this.callback());
+    
+
+        this.getTickets();
         this.closeModal();
 
     }
